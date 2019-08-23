@@ -1,0 +1,24 @@
+
+
+// Imports fonts
+@import url(https://fonts.googleapis.com/css?family=Poppins:400,900&display=swap);
+
+// Fields
+$font-stack: 'Poppins', sans-serif;
+$prim: #FFFFFF;
+$seco: #333333;
+$tert: #1e9aa3;
+
+// Normalization
+body {
+
+  margin: 0;
+  font-weight: 900;
+
+  background-color: $tert;
+  color: $prim;
+  font-family: $font-stack;
+
+  * { box-sizing: border-box; }
+
+}

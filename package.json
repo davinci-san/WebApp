@@ -1,0 +1,42 @@
+{
+  "name": "davinci_webapp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./server.js",
+  "scripts": {
+    "debug": "webpack --watch",
+    "minify": "webpack --watch -p",
+    "start": "webpack-dev-server --hot"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/davinci-san/DaVinci-WebApp.git"
+  },
+  "author": "Aske K.",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/davinci-san/DaVinci-WebApp/issues"
+  },
+  "homepage": "https://github.com/davinci-san/DaVinci-WebApp#readme",
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.5",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react": "^6.24.1",
+    "body-parser": "^1.19.0",
+    "css-loader": "^3.2.0",
+    "express": "^4.17.1",
+    "node-sass": "^4.12.0",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0",
+    "react-hot-loader": "^4.12.11",
+    "redux": "^4.0.4",
+    "redux-thunk": "^2.3.0",
+    "sass-loader": "^7.3.1",
+    "style-loader": "^1.0.0",
+    "url-loader": "^2.1.0",
+    "webpack": "^4.39.2",
+    "webpack-cli": "^3.3.7",
+    "webpack-dev-server": "^3.8.0"
+  }
+}
