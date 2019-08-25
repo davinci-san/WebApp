@@ -10,13 +10,10 @@ import {
 
 // Initital state
 const init_state = {
-  
-  current_view: '',
-  current_section: '',
-
+  current_view: 'v_products',
+  current_section: 's_products',
   views: [ ],
   sections: [ ],
-
 };
 
 // Navigation reducer
@@ -25,22 +22,34 @@ export default (( state=init_state,action ) => {
 
     // Append view
     case APPEND_VIEW: {
-
+      return Object.assign ({}, state, {
+        views: state.views.concat ([
+          action.payload.id,
+        ])
+      });
     }
 
     // Switch view
     case SWITCH_VIEW: {
-
+      return Object.assign ({}, state, {
+        current_view: action.payload.id,
+      });
     }
 
     // Append section
     case APPEND_SECTION: {
-
+      return Object.assign ({}, state, {
+        sections: state.sections.concat ([
+          action.payload.id
+        ])
+      });
     }
 
     // Switch section
     case SWITCH_SECTION: {
-
+      return Object.assign ({}, state, {
+        current_view: action.payload.id,
+      });
     }
 
     // Default case

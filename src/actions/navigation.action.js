@@ -2,8 +2,8 @@
 
 // Append view
 export const APPEND_VIEW = 'APPEND_VIEW';
-export let append_view = (( id, label ) => {
-  return { type: APPEND_VIEW, payload: { id, label } };
+export let append_view = (( id ) => {
+  return { type: APPEND_VIEW, payload: { id } };
 });
 
 // Switch view
@@ -15,8 +15,8 @@ export let switch_view = (( id ) => {
 
 // Append section
 export const APPEND_SECTION = 'APPEND_SECTION';
-export let append_section = (( id, label ) => {
-  return { type: APPEND_SECTION, payload: ( id, label ) };
+export let append_section = (( id ) => {
+  return { type: APPEND_SECTION, payload: ( id ) };
 });
 
 // Switch section

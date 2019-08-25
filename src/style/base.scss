@@ -9,16 +9,99 @@ $prim: #FFFFFF;
 $seco: #333333;
 $tert: #1e9aa3;
 
+$trans-base: cubic-bezier(.7,0,.3,1);
+$sidebar-width: 96px;
+
 // Normalization
 body {
 
   margin: 0;
   font-weight: 900;
 
-  background-color: $tert;
-  color: $prim;
+  background-color: $prim;
+  color: $tert;
   font-family: $font-stack;
 
+  position: absolute;
+  width: 100vw; height: 100vh;
+  overflow: hidden;
+
   * { box-sizing: border-box; }
+
+  .app-instance {
+
+    position: absolute;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    overflow: hidden;
+
+    .sidebar {
+
+      position: absolute;
+      top: 0; left: 0;
+      width: $sidebar-width;
+      height: 100%;
+
+      border-right: 1px solid darken($prim, 10%);
+      background-color: $prim;
+      color: $tert;
+
+      // tmp
+      text-align: center;
+      padding-top: 16px;
+
+    }
+
+    .sections {
+
+      position: absolute;
+      top: 0; right: 0;
+      width: calc(100% - #{$sidebar-width});
+      height: 100%;
+
+      .section {
+
+        display: none;
+        position: absolute;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        overflow: hidden;
+
+        &.active { display: block; }
+
+        .section-inner {
+
+          transition: 400ms $trans-base;
+          
+          display: flex;
+          position: absolute;
+          top: 0; left: 0;
+          width: auto; height: 100%;
+
+          .view {
+            
+            position: relative;
+            flex: 1;
+
+            min-width: calc((100vw - #{$sidebar-width}) / 2);
+            max-width: calc((100vw - #{$sidebar-width}) / 2);
+            height: 100%;
+
+            // Tmp
+            text-align: center;
+            padding-top: 64px;
+
+            background-color: $tert; color: $prim;
+            &:nth-child(2n) { background-color: $prim; color: $tert; }
+      
+          }
+
+        }
+
+      }
+
+    }
+
+  }
 
 }

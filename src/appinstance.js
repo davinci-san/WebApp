@@ -5,6 +5,11 @@ import React from 'react';
 import { hot } from 'react-hot-loader';
 import './style/base.scss';
 
+import Section from './types/section';
+import ProductsView from './views/products.view';
+import ProcessesView from './views/processes.view';
+import ProcessInfoView from './views/process_info.view';
+
 // App Instance Component
 export default hot (module) (class AppInstance
   extends React.Component {
@@ -19,29 +24,30 @@ export default hot (module) (class AppInstance
   // Main render
   render () { return ( 
     <div className="app-instance">
-      Lorem Ipsum
+
+      {/* Sidebar */}
+      <div className="sidebar">
+        BAR
+      </div>
+      
+      {/* Sections */}
+      <div className="sections">
+
+        {/* Products section */}
+        <Section id="s_products" store={this.props.store}>
+          <ProductsView store={this.props.store} />
+          <ProcessesView store={this.props.store} />
+          <ProcessInfoView store={this.props.store} />
+        </Section>
+
+        {/* Settings section */}
+        <Section id="s_settings" store={this.props.store}>
+          settings
+        </Section>
+
+      </div>
+    
     </div>
   )}
-
-  // Life cycle events
-  // On store change
-  onStoreChange () {
-
-    // Extracts data
-    let state = this.props.store.getState ();
-
-  }
-    
-  // Component did mount
-  componentDidMount () {
-    this.unsub = this.props.store.subscribe (
-      this.onStoreChange.bind (this)
-    );
-  }
-
-  // Component will unmount
-  componentWillUnmount () {
-    this.unsub ();
-  }
 
 })
