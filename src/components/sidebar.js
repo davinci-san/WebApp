@@ -3,33 +3,24 @@
 // Imports
 import React from 'react';
 
-// View Component
-export default class ViewComponent
+// App Instance Component
+export default class AppInstance
   extends React.Component {
 
   // Constructor
   constructor (props) {
     super (props);
     this.state = {
-      active: false,
+      active: true,
     };
   }
-  
 
   // Renders
   // Main render
-  render () { return (
-    
-    <div className={'view'+(this.state.active?' active':'')} id={this.props.id}>
-      <header className="view-header">
-        <div className="label">
-          {this.props.label}
-        </div>
-      </header>
+  render () { return ( 
 
-      <div className="view-body">
-        { this.props.children }
-      </div>
+    <div className={'sidebar'+(this.state.active?' active':'')}>
+      BAR
     </div>
 
   )}
@@ -40,7 +31,7 @@ export default class ViewComponent
 
     // Extracts data
     let state = this.props.store.getState ();
-    let active = state.navigation.current_view == this.props.id;
+    let active = state.navigation.current_view == 'sidebar';
 
     // Sets state
     this.setState ({

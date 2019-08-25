@@ -10,7 +10,7 @@ import {
 
 // Initital state
 const init_state = {
-  current_view: 'v_products',
+  current_view: 'sidebar',
   current_section: 's_products',
   views: [ ],
   sections: [ ],

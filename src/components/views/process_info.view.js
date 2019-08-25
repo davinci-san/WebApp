@@ -2,11 +2,11 @@
 
 // Imports
 import React from 'react';
-import View from '../types/view';
-import { switch_view } from '../actions/navigation.action';
+import View from '../../types/view';
+import { switch_view } from '../../actions/navigation.action';
 
 // Products view
-export default class ProductsView
+export default class ProcessInfoView
   extends React.Component {
 
   // Constructor
@@ -18,9 +18,9 @@ export default class ProductsView
   // Renders
   // Main render
   render () { return (
-    <View id="v_products" store={this.props.store}>
-      <div onClick={this.switch.bind (this, 'v_processes')}>
-        Products: Move On {'->'}
+    <View label="Process Info" id="v_process_info" store={this.props.store}>
+      <div onClick={this.switch.bind (this, 'sidebar')}>
+        {'<-'}
       </div>
     </View>
   )}

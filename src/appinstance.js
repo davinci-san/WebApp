@@ -6,9 +6,10 @@ import { hot } from 'react-hot-loader';
 import './style/base.scss';
 
 import Section from './types/section';
-import ProductsView from './views/products.view';
-import ProcessesView from './views/processes.view';
-import ProcessInfoView from './views/process_info.view';
+import Sidebar from './components/sidebar';
+import ProductsView from './components/views/products.view';
+import ProcessesView from './components/views/processes.view';
+import ProcessInfoView from './components/views/process_info.view';
 
 // App Instance Component
 export default hot (module) (class AppInstance
@@ -23,12 +24,10 @@ export default hot (module) (class AppInstance
   // Renders
   // Main render
   render () { return ( 
-    <div className="app-instance">
+    <div id="app-instance">
 
       {/* Sidebar */}
-      <div className="sidebar">
-        BAR
-      </div>
+      <Sidebar store={this.props.store} />
       
       {/* Sections */}
       <div className="sections">
