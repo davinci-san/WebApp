@@ -45,7 +45,7 @@ export default class SectionComponent
     // If the current view is the sidebar
     if (current_view == 'sidebar') {
       let appinstance = getComputedStyle (document.getElementById ('app-instance'));
-      return -(parseInt (appinstance.width)/2 - 96/);
+      return -(parseInt (appinstance.width)/2 - 96/2);
     }
 
     // Compares positions, and returns left for section inner
