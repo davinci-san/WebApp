@@ -23,4 +23,25 @@ export default hot (module) (class AppInstance
     </div>
   )}
 
+  // Life cycle events
+  // On store change
+  onStoreChange () {
+
+    // Extracts data
+    let state = this.props.store.getState ();
+
+  }
+    
+  // Component did mount
+  componentDidMount () {
+    this.unsub = this.props.store.subscribe (
+      this.onStoreChange.bind (this)
+    );
+  }
+
+  // Component will unmount
+  componentWillUnmount () {
+    this.unsub ();
+  }
+
 })

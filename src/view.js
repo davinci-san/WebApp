@@ -6,18 +6,12 @@ import React from 'react';
 // View Component
 export default class ViewComponent
   extends React.Component {
-  
-  // Constructor
-  constructor (props) {
-    super (props);
-    this.state = { };
-  }
 
   // Renders
   // Main render
   render () { return (
     
-    <div className="view">
+    <div className="view" id={this.props.id}>
       { this.props.children }
     </div>
 
