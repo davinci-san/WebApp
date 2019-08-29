@@ -2,6 +2,7 @@
 
 // Imports
 import React from 'react';
+import { switch_view } from '../../actions/navigation.action';
 
 // View Component
 export default class ViewComponent
@@ -25,6 +26,14 @@ export default class ViewComponent
         <div className="label">
           {this.props.label}
         </div>
+
+        { this.props.previous_view != null &&
+          <div className="close" onClick={this.close.bind (this)}>
+            <div className="close-inner">
+              &times;
+            </div>
+          </div>
+        }
       </header>
 
       <div className="view-body">
@@ -33,6 +42,14 @@ export default class ViewComponent
     </div>
 
   )}
+
+  // Actions
+  // Close
+  close () {
+    this.props.store.dispatch (
+      switch_view ( this.props.previous_view )
+    );
+  }
 
   // Life cycle events
   // On store change

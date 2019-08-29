@@ -1,0 +1,33 @@
+
+
+.sections {
+
+  position: absolute;
+  top: 0; right: 0;
+  width: calc(100% - #{$sidebar-width});
+  height: 100%;
+
+  .section {
+
+    display: none;
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    overflow: hidden;
+
+    &.active { display: block; }
+
+    .section-inner {
+
+      transition: 400ms $trans-base;
+      
+      display: flex;
+      position: absolute;
+      top: 0; left: 0;
+      width: auto; height: 100%;
+
+    }
+
+  }
+
+}

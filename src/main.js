@@ -3,7 +3,7 @@
 // Imports
 import React from 'react';
 import ReactDOM from 'react-dom';
-import AppInstance from './appinstance';
+import AppInstance from './components/app/appinstance';
 import { store } from './store';
 
 // Main render

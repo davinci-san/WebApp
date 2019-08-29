@@ -35,126 +35,13 @@ body {
     width: 100vw; height: 100vh;
     overflow: hidden;
 
-    .sidebar {
-
-      z-index: 10;
-
-      position: absolute;
-      top: 0; left: 0;
-      width: calc(#{$sidebar-width} + 1px);
-      height: 100%;
-
-      background-color: $prim;
-      color: $tert;
-
-      transition: 400ms $trans-base;
-      border-right: 1px solid darken($prim, 8%);
-
-      // tmp
-      text-align: center;
-      padding-top: 16px;
-
-      &:hover { width: calc(#{$sidebar-width} * 2); }
-      &.active { width: calc(50vw + #{$sidebar-width}/2); }
-
-    }
-
-    .sections {
-
-      position: absolute;
-      top: 0; right: 0;
-      width: calc(100% - #{$sidebar-width});
-      height: 100%;
-
-      .section {
-
-        display: none;
-        position: absolute;
-        top: 0; left: 0;
-        width: 100%; height: 100%;
-        overflow: hidden;
-
-        &.active { display: block; }
-
-        .section-inner {
-
-          transition: 400ms $trans-base;
-          
-          display: flex;
-          position: absolute;
-          top: 0; left: 0;
-          width: auto; height: 100%;
-
-          .view {
-            
-            position: relative;
-            flex: 1;
-
-            min-width: calc((100vw - #{$sidebar-width}) / 2);
-            max-width: calc((100vw - #{$sidebar-width}) / 2);
-            height: 100%;
-            padding-top: 64px;
-
-            background-color: darken($prim, 4%); 
-            color: $tert;
-
-            .view-header {
-
-              position: absolute;
-              top: 0; left: 0;
-              width: 100%;
-              height: 64px;
-
-              background-color: $prim;
-              color: $tert;
-              border-left: 1px solid darken($prim, 4%);
-              border-right: 1px solid darken($prim, 4%);
-
-              .label {
-
-                position: absolute;
-                top: 50%; left: 32px;
-                transform: translateY(-50%);
-
-                font-weight: 300;
-                text-transform: uppercase;
-                font-size: 14px;
-
-              }
-
-              &:nth-child(1) {
-                border-left-width: 0;
-              }
-
-            }
-
-            .view-body {
-
-              position: absolute;
-              top: 64px; left: 0;
-              width: calc(100% - 64px);
-              height: 100%;
-
-              padding-top: 64px;
-              text-align: center;
-
-            }
-
-            &:nth-child(2n) { 
-              
-              background-color: darken($prim, 2%); 
-              color: $tert; 
-            
-            }
-      
-          }
-
-        }
-
-      }
-
-    }
-
   }
 
 }
+
+// Imports
+@import './sidebar';
+@import './section';
+@import './view';
+
+@import './views/products';

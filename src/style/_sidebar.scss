@@ -1,0 +1,26 @@
+
+
+.sidebar {
+
+  z-index: 10;
+
+  position: absolute;
+  top: 0; left: 0;
+  width: calc(#{$sidebar-width} + 1px);
+  height: 100%;
+
+  background-color: $prim;
+  color: $tert;
+
+  transition: 400ms $trans-base;
+  border-right: 1px solid darken($prim, 8%);
+
+  // tmp
+  font-weight: 300;
+  text-align: center;
+  padding-top: 16px;
+
+  &:hover { width: calc(#{$sidebar-width} * 2); }
+  &.active { width: calc(50vw + #{$sidebar-width}/2); }
+
+}

@@ -2,7 +2,7 @@
 
 // Imports
 import React from 'react';
-import View from '../../types/view';
+import View from '../app/view';
 import { switch_view } from '../../actions/navigation.action';
 
 // Products view
@@ -18,10 +18,8 @@ export default class ProcessesView
   // Renders
   // Main render
   render () { return (
-    <View label="Processes" id="v_processes" store={this.props.store}>
-      <div onClick={this.switch.bind (this, 'v_process_info')}>
-        {'->'}
-      </div>
+    <View label="Processes" id="v_processes" store={this.props.store} previous_view="sidebar">
+      
     </View>
   )}
 
