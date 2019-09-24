@@ -20,7 +20,7 @@ export default (( state=init_state,action ) => {
 
     // New process
     case NEW_PROCESS: {
-      Object.assign ({}, state, {
+      return Object.assign ({}, state, {
         id_counter: state.id_counter+1,
         elements: state.elements.concat ([{
           

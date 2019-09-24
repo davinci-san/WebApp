@@ -85,7 +85,7 @@ export default class ProductsView
         { this.state.user_role == 0 &&
           <div className="actions">
             <div className="remove action" onClick={ev => { ev.stopPropagation(); this.setState ({ deleting: e.id }) }}>
-              <svg viewBox="0 0 24 24" class="inner">
+              <svg viewBox="0 0 24 24" className="inner">
                 <use xlinkHref="#icon-delete">
                 </use>
               </svg>
@@ -93,7 +93,7 @@ export default class ProductsView
 
             { this.state.editing!=e.id &&
               <div className="edit action" onClick={ev => { this.edit (ev, e) }}>
-                <svg viewBox="0 0 24 24" class="inner">
+                <svg viewBox="0 0 24 24" className="inner">
                   <use xlinkHref="#icon-edit">
                   </use>
                 </svg>
@@ -102,7 +102,7 @@ export default class ProductsView
 
             { this.state.editing==e.id &&
               <div className="save action" onClick={ev => { this.save (ev, e.id) }}>
-                <svg viewBox="0 0 24 24" class="inner">
+                <svg viewBox="0 0 24 24" className="inner">
                   <use xlinkHref="#icon-save">
                   </use>
                 </svg>

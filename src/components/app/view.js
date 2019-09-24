@@ -91,6 +91,12 @@ export default class ViewComponent
     this.unsub = this.props.store.subscribe (
       this.onStoreChange.bind (this)
     ); this.onStoreChange ();
+
+    window.addEventListener ('keydown', (e) => {
+      if (this.state.active && e.code=='Escape') {
+        this.close ();
+      }
+    }); 
   }
 
   // Component will unmount

@@ -8,9 +8,10 @@ import thunk from 'redux-thunk';
 import user from './reducers/user.reducer';
 import navigation from './reducers/navigation.reducer';
 import products from './reducers/product.reducer';
+import processes from './reducers/process.reducer';
 
 // Root reducer, dev tools n' middleware
-const root_reducer = combineReducers ({ user, navigation, products });
+const root_reducer = combineReducers ({ user, navigation, products, processes });
 const compose_enhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__;
 const middleware = compose_enhancers ? compose_enhancers (applyMiddleware (thunk)) : applyMiddleware (thunk);
 
