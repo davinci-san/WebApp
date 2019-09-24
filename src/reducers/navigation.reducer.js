@@ -5,15 +5,19 @@ import {
   APPEND_VIEW,
   SWITCH_VIEW,
   APPEND_SECTION,
-  SWITCH_SECTION
+  SWITCH_SECTION,
 } from '../actions/navigation.action';
 
 // Initital state
 const init_state = {
+  
   current_view: 'sidebar',
   current_section: 's_products',
   views: [ ],
   sections: [ ],
+
+  current_product: null,
+
 };
 
 // Navigation reducer
@@ -36,6 +40,7 @@ export default (( state=init_state,action ) => {
       });
     }
 
+
     // Append section
     case APPEND_SECTION: {
       return Object.assign ({}, state, {
@@ -51,6 +56,7 @@ export default (( state=init_state,action ) => {
         current_view: action.payload.id,
       });
     }
+
 
     // Default case
     default: { 

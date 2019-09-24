@@ -27,13 +27,27 @@ export default class ViewComponent
           {this.props.label}
         </div>
 
-        { this.props.previous_view != null &&
-          <div className="close" onClick={this.close.bind (this)}>
-            <div className="close-inner">
-              &times;
+        <div className="topbar-buttons">
+
+          { this.props.add != null &&
+            <div className="topbar-button add" onClick={this.props.add.bind (this)}>
+              <svg viewBox="0 0 24 24" className="inner">
+                <use xlinkHref="#icon-add">
+                </use>
+              </svg>
             </div>
-          </div>
-        }
+          }
+
+          { this.props.previous_view != null &&
+            <div className="topbar-button close" onClick={this.close.bind (this)}>
+              <svg viewBox="0 0 24 24" className="inner">
+                <use xlinkHref="#icon-close">
+                </use>
+              </svg> 
+            </div>
+          }
+
+        </div>
       </header>
 
       <div className="view-body">
@@ -46,9 +60,15 @@ export default class ViewComponent
   // Actions
   // Close
   close () {
+    
+    if (this.props.close_callback!=null) {
+      this.props.close_callback ();
+    }
+
     this.props.store.dispatch (
       switch_view ( this.props.previous_view )
     );
+
   }
 
   // Life cycle events

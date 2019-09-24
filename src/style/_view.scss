@@ -26,6 +26,8 @@
     border-right: 1px solid darken($prim, 4%);
     box-shadow: 0 2px 4px rgba(0,0,0,.05);
 
+    z-index: 9;
+
     .label {
 
       position: absolute;
@@ -38,29 +40,45 @@
 
     }
 
-    .close {
+    .topbar-buttons {
 
+      display: flex;
       position: absolute;
       top: 0; right: 0;
-      width: 64px;
-      height: 100%;
-      border-left: 1px solid darken($prim, 4%);
-      cursor: pointer;
+      width: auto; height: 64px;
 
-      .close-inner {
+      .topbar-button {
 
-        position: absolute;
-        top: 50%; left: 50%;
-        transform: translate(-50%,-50%);
+        position: relative;
+        min-width: 68px;
+        max-width: 68px;
+        height: 100%;
+        flex: 1;
 
-        font-size: 20px;
-        font-weight: 300;
-        color: $tert;
+        border-left: 1px solid darken($prim, 4%);
+        cursor: pointer;
+  
+        .inner {
+  
+          position: absolute;
+          top: 50%; left: 50%;
+          transform: translate(-50%,-50%);
+  
+          height: 24px;
+          fill: $tert;
+  
+        }
 
+        &.close .inner {
+
+          height: 18px;
+
+        }
+  
+        &:hover { background-color: rgba($tert, .04); }
+        &:active { background-color: rgba($tert, .08); }
+  
       }
-
-      &:hover { background-color: rgba($seco, .04); }
-      &:active { background-color: rgba($seco, .02); }
 
     }
 

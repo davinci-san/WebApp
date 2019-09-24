@@ -12,6 +12,7 @@ export default class AppInstance
     super (props);
     this.state = {
       active: true,
+      edit: true,
     };
   }
 
@@ -20,7 +21,36 @@ export default class AppInstance
   render () { return ( 
 
     <div className={'sidebar'+(this.state.active?' active':'')}>
-      BAR
+      <header className="header">
+        {/* <svg className="logo" viewBox="0 0 512 128.445">
+          <use xlinkHref="#icon-logo">
+          </use>
+        </svg> */}
+      </header>
+
+      <footer className="footer">
+        
+        <div className="to-products button">
+          <svg className="icon" viewBox="0 0 24 24">
+            <use xlinkHref="#icon-products"></use>
+          </svg>
+
+          <div className="label">
+            Products
+          </div>
+        </div>
+        
+        <div className="to-team button">
+          <svg className="icon" viewBox="0 0 24 24">
+            <use xlinkHref="#icon-people"></use>
+          </svg>
+
+          <div className="label">
+            Team Management
+          </div>
+        </div>
+
+      </footer>
     </div>
 
   )}

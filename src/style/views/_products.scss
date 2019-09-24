@@ -4,34 +4,6 @@
 
   padding: 64px;
 
-  .add-new {
-
-    position: relative;
-    width: 100%;
-    height: 64px;
-    background-color: $prim;
-
-    margin-bottom: 32px;
-    cursor: pointer;
-
-    box-shadow: 0 2px 4px rgba(0,0,0,.03);
-    transition: 120ms $trans-base;
-
-    .add-new-inner {
-
-      position: absolute;
-      top: 50%; left: 50%;
-      transform: translate(-50%,-50%);
-      font-size: 14px;
-      font-weight: 300;
-
-    }
-
-    &:hover { box-shadow: 0 3px 4px rgba(0,0,0,.07); }
-    &:active { box-shadow: 0 1px 4px rgba(0,0,0,.01); }
-
-  }
-
   .all-products .product {
     
     position: relative;
@@ -41,12 +13,26 @@
     cursor: pointer;
 
     box-shadow: 0 2px 4px rgba(0,0,0,.03);
-    transition: 120ms $trans-base;
+    transition: 200ms $trans-base;
     background-color: $prim;
 
     &:hover { box-shadow: 0 3px 4px rgba(0,0,0,.07); }
-    &:active { box-shadow: 0 1px 4px rgba(0,0,0,.01); }
     &:nth-child(1) { margin-top: 0; }
+
+    &.active { 
+    
+      background-color: lighten($tert, 60%); 
+      box-shadow: 0 0 0 rgba(0,0,0,0);
+
+    }
+
+    .container {
+
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 160px;
+
+    }
 
     .left-side {
 
@@ -56,6 +42,7 @@
       height: 100%;
 
       font-weight: 300;
+      color: $tert;
 
       .overlay {
 
@@ -96,6 +83,7 @@
 
         font-size: 16px;
         margin-bottom: 8px;
+        width: calc(100% - 32px);
 
       }
 
@@ -104,10 +92,221 @@
         font-size: 12px;
         font-weight: 300;
 
+        width: calc(100% - 32px);
+        height: 72px;
+        overflow-y: hidden;
+
+      }
+
+      &.editing {
+
+        input,
+        textarea { 
+          
+          background-color: transparent;
+          border: 0px solid rgba($tert, .5);
+          outline: none;
+          width: 100%;
+
+          font-family: $font-stack;
+          color: $tert;
+          resize: none;
+
+          background-color: darken($prim, 3%);
+          border-radius: 2px;
+
+          padding: 4px 8px;
+
+        }
+
+        label {
+
+          position: absolute;
+          top: 0; left: 0;
+
+          font-weight: 900;
+          transition: 120ms $trans-base;
+
+        }
+
+        input:focus + label,
+        label.active {
+
+          top: -12px; left: 1px;
+          font-size: 8px;
+          font-weight: 300;
+
+        }
+
+        .label, 
+        .desc {
+          
+          position: relative;
+
+        }
+
+        .label {
+
+          margin-top: -2px;
+
+          input {
+
+            font-size: 16px;
+            font-weight: 900;
+
+          }
+
+        }
+
+        .desc {
+
+          overflow-y: initial;
+
+          textarea {
+
+            height: 78px;
+
+          }
+          
+          textarea:focus + label,
+          label.active {
+
+            top: -12px;
+
+          }
+
+        }
+
       }
 
     }
 
+    .action {
+
+      position: absolute;
+      right: 16px;
+      width: 32px; height: 32px;
+      border-radius: 16px;
+
+      transition: 120ms $trans-base;
+      background-color: $prim;
+      border: 1px solid darken($prim, 6%);
+      cursor: pointer;
+
+      font-weight: 300;
+      font-size: 16px;
+      line-height: 32px;
+      height: 32px;
+
+      z-index: 9;
+
+      &.remove {
+        
+        bottom: 16px;
+
+      }
+
+      &.edit, &.save {
+
+        bottom: 56px;
+
+      }
+
+      .inner {
+
+        position: absolute;
+        top: 50%; left: 50%;
+        transform: translate(-50%,-50%);
+
+        transition: 120ms $trans-base;
+        width: 16px;
+        fill: $seco;
+
+      }
+
+      &.remove:hover .inner { fill: $warn; }
+      &.edit:hover .inner,
+      &.save:hover .inner { 
+        fill: $tert; 
+      }
+
+      &:active { 
+        
+        background-color: lighten($tert, 60%);
+        // box-shadow: inset 0px 1px 2px rgba(0,0,0,.04);
+      
+      }
+
+    }
+
+    .warning {
+
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 100%; height: 0;
+      transition: 200ms $trans-base;
+      overflow: hidden;
+      box-sizing: border-box;
+      background-color: darken($prim, 2%);
+      cursor: initial;
+
+      .inner {
+
+        position: absolute;
+        bottom: 0; left: 0;
+        width: 100%; height: 32px;
+        border-top: 1px solid darken($prim, 6%);
+
+        .label {
+
+          position: absolute;
+          top: 50%; left: 24px;
+          transform: translateY(-50%);
+
+          font-size: 12px;
+          font-weight: 300;
+          text-transform: uppercase;
+          color: $seco;
+
+        }
+
+        .response {
+
+          position: absolute;
+          top: 50%; right: 24px;
+          transform: translateY(-50%); 
+
+          font-size: 12px;
+          text-transform: uppercase;
+
+          & > * {
+
+            display: inline-block;
+            margin-left: 16px;
+            transition: 200ms $trans-base;
+            cursor: pointer;
+
+          }
+
+          .agree { color: adjust-color($warn, $saturation: -30%); }
+          .disagree { color: adjust-color($tert, $saturation: -30%); }
+          
+          .agree:hover { color: $warn; }
+          .disagree:hover { color: $tert; }
+
+        }
+
+      }
+
+    }
+
+    &.deleting {
+
+      height: calc(160px + 32px);
+      padding-bottom: 32px;
+      .warning { height: 32px; }
+
+    }
 
   }
 

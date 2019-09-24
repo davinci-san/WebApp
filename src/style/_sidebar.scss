@@ -17,10 +17,115 @@
 
   // tmp
   font-weight: 300;
-  text-align: center;
   padding-top: 16px;
 
-  &:hover { width: calc(#{$sidebar-width} * 2); }
-  &.active { width: calc(50vw + #{$sidebar-width}/2); }
+
+  box-shadow: 0 2px 4px rgba(0,0,0,.05);
+
+  .header {
+
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: calc(100% - 64px * 2);
+
+    .logo {
+
+      position: absolute;
+      top: 26px; left: 50%;
+      transform: translateX(-50%);
+      transition: 400ms $trans-base;
+      
+      width: 48px;
+
+    }
+
+  }
+
+  .footer {
+
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 100%; height: auto;
+
+    .button {
+
+      position: relative;
+      width: 100%;
+      height: 64px;
+      border-top: 1px solid darken($prim, 10%);
+
+      cursor: pointer;
+      &:hover { background-color: rgba($tert, .04); }
+      &:active { background-color: rgba($tert, .08); }
+
+      .icon {
+
+        position: absolute;
+        top: 50%; left: 36px;
+        transform: translateY(-50%);
+        width: 24px;
+        fill: $tert;
+        transition: 400ms $trans-base;
+
+      }
+
+      .label {
+
+        position: absolute;
+        top: 50%; left: 92px;
+        transform: translateY(-50%);
+        font-size: 14px;
+        opacity: 0;
+        transition: 400ms $trans-base;
+        white-space: nowrap;
+
+      }
+
+    }
+
+  }
+
+  &:hover { 
+    
+    width: calc(#{$sidebar-width} * 2); 
+  
+  }
+
+  &:not(.active):hover {
+
+    .footer .button {
+
+      .icon {
+
+        left: 80px;
+
+      }
+
+    }
+
+  }
+  
+  &.active { 
+    
+    width: calc(50vw + #{$sidebar-width}/2); 
+
+    .header .logo {
+
+      top: 48px;
+
+    }
+
+    .footer .button {
+      
+      .label {
+
+        opacity: 1;
+
+      }
+
+    }
+  
+  }
 
 }

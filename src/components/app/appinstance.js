@@ -11,6 +11,8 @@ import ProductsView from '../views/products.view';
 import ProcessesView from '../views/processes.view';
 import ProcessInfoView from '../views/process_info.view';
 
+import { sign_in } from '../../actions/user.action';
+
 // App Instance Component
 export default hot (module) (class AppInstance
   extends React.Component {
@@ -48,5 +50,13 @@ export default hot (module) (class AppInstance
     
     </div>
   )}
+
+  // Life cycle events
+  // Component did mount
+  componentDidMount () {
+    this.props.store.dispatch ( sign_in ({
+      role: 0, mail: '', 
+    }, null ))
+  }
 
 })
