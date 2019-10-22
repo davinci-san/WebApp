@@ -20,7 +20,7 @@ export default hot (module) (class AppInstance
   // Constructor
   constructor (props) {
     super (props);
-    this.state = { };
+    this.state = {  };
   }
 
   // Renders

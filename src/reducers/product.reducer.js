@@ -38,16 +38,16 @@ export default (( state=init_state,action ) => {
     case REMOVE_PRODUCT: {
 
       // Fetches index
-      let n;
-      for (n = 0; n < state.elements.length; n ++) {
-        if (state.elements[n].id==action.payload.id) {
-          state.elements.splice (n,1);
+      let n, e = state.elements.concat ([]);
+      for (n = 0; n < e.length; n ++) {
+        if (e[n].id==action.payload.id) {
+          e.splice (n,1);
         };
       }
 
       // Returns
       return Object.assign ({}, state, {
-        elements: state.elements
+        elements: e
       });
 
     }

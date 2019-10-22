@@ -3,8 +3,15 @@
 // Imports
 import React from 'react';
 import View from '../app/view';
-import { switch_view } from '../../actions/navigation.action';
 
+
+// Actions
+// Navigation
+import { 
+  switch_view 
+} from '../../actions/navigation.action';
+
+// Products
 import { 
   set_current_product, 
   new_product, 
@@ -12,10 +19,12 @@ import {
   edit_product,
 } from '../../actions/product.action';
 
+
 // Products view
 export default class ProductsView
   extends React.Component {
 
+  // Initilization
   // Constructor
   constructor (props) {
     super (props);
@@ -23,7 +32,8 @@ export default class ProductsView
 
       user_role: null,
       current: null,
-      
+
+      children: [ ],
       products: [ ],
       deleting: null,
       editing: null,
@@ -35,11 +45,22 @@ export default class ProductsView
   // Renders
   // Main render
   render () { return (
-    <View label="products" id="v_products" store={this.props.store} add={this.addNew.bind (this)}>
+    <View label="products" 
+      id="v_products" 
+      store={this.props.store} 
+      add={this.newProduct.bind (this)}>
 
-      <div className="all-products">
-        { this.state.products.map (e => this.renderProduct (e)) }
-      </div>
+      { this.state.products.length>0 &&
+        <div className="all-products">
+          { this.state.products.map (e => this.renderProduct (e)) }
+        </div>
+      }
+
+      { this.state.products.length==0 &&
+        <div className="no-elements">
+          Start by adding a new product!
+        </div>
+      }
 
     </View>
   )}
@@ -47,9 +68,7 @@ export default class ProductsView
   // Render product
   renderProduct (e) { return (
     <div className={'product'
-      +(this.state.current==e.id?' active':'')
-      +(this.state.deleting==e.id?' deleting':'')} 
-
+      +(this.state.current==e.id?' active':'')}
       onClick={this.openProduct.bind (this, 'v_processes', e.id)}
       key={e.id}>
 
@@ -57,7 +76,9 @@ export default class ProductsView
 
         <div className="left-side">
           <div className="overlay"></div>
-          <div className="processes">{e.processes}</div>
+          <div className="inner">
+            { this.state.children.filter (c => c == e.id).length }
+          </div>
         </div>
 
         { this.state.editing!=e.id &&
@@ -71,12 +92,21 @@ export default class ProductsView
           <div className="right-side editing">
             <div className="label">
               <input type="text" id="product-input-label" autoComplete="off" 
-                onClick={ev => { ev.stopPropagation () }} />
+                onClick={ev=>{ ev.stopPropagation () }}
+                onKeyDown={ev=>{if (ev.keyCode==13) {this.saveProduct (ev, e.id)}}} />
             </div>
 
             <div className="desc">
               <textarea type="textarea" id="product-input-desc" autoComplete="off" 
-                onClick={ev => { ev.stopPropagation () }} >
+                onClick={ev => { ev.stopPropagation () }} 
+                onKeyUp={ev=> { if (ev.keyCode==16) {this.shift_pressed=false;} }}
+                onKeyDown={ev=> {
+                  
+                  if (this.shift_pressed && ev.keyCode==13) { 
+                    this.saveProduct (ev, e.id); 
+                  } this.shift_pressed = ev.keyCode == 16;
+
+                }} >
               </textarea>
             </div>
           </div>
@@ -84,15 +114,39 @@ export default class ProductsView
 
         { this.state.user_role == 0 &&
           <div className="actions">
-            <div className="remove action" onClick={ev => { ev.stopPropagation(); this.setState ({ deleting: e.id }) }}>
-              <svg viewBox="0 0 24 24" className="inner">
-                <use xlinkHref="#icon-delete">
-                </use>
-              </svg>
-            </div>
+
+            { this.state.deleting!=e.id &&
+              <div className="remove action" 
+                onClick={ev => { 
+                  ev.stopPropagation(); 
+                  this.setState ({ deleting: e.id }); 
+                  clearTimeout (this.deletion_to);
+                  this.deletion_to = setTimeout (_=>{this.setState({deleting:null})}, 1500); 
+                }}>
+
+                <svg viewBox="0 0 24 24" className="inner">
+                  <use xlinkHref="#icon-delete">
+                  </use>
+                </svg>
+              </div>
+            }
+
+            { this.state.deleting==e.id &&
+              <div className="remove accept action" 
+                onClick={ev => { 
+                  clearTimeout (this.deletion_to);
+                  this.removeProduct (ev, e.id); 
+                }}>
+                  
+                <svg viewBox="0 0 24 24" className="inner">
+                  <use xlinkHref="#icon-accept">
+                  </use>
+                </svg>
+              </div>
+            }
 
             { this.state.editing!=e.id &&
-              <div className="edit action" onClick={ev => { this.edit (ev, e) }}>
+              <div className="edit action" onClick={ev => { this.editProduct (ev, e) }}>
                 <svg viewBox="0 0 24 24" className="inner">
                   <use xlinkHref="#icon-edit">
                   </use>
@@ -101,7 +155,7 @@ export default class ProductsView
             }
 
             { this.state.editing==e.id &&
-              <div className="save action" onClick={ev => { this.save (ev, e.id) }}>
+              <div className="save action" onClick={ev => { this.saveProduct (ev, e.id) }}>
                 <svg viewBox="0 0 24 24" className="inner">
                   <use xlinkHref="#icon-save">
                   </use>
@@ -114,40 +168,25 @@ export default class ProductsView
 
       </div>
 
-      <div className="warning">
-        <div className="inner">
-          <div className="response">
-            <div className="agree" onClick={ev => { this.remove (ev, e.id); }}>
-              Delete
-            </div>
-            
-            <div className="disagree" onClick={ev => { ev.stopPropagation (); this.setState ({ deleting: null }); }}>
-              Cancel
-            </div>
-          </div>
-        </div>
-      </div>
-
     </div>
   )}
 
-  // External Actions
-  // Switch View
+  // Actions
+  // Open
   openProduct (id, pid) {
     this.props.store.dispatch ( switch_view (id) );
     this.props.store.dispatch ( set_current_product (pid) );
   }
 
-  // Add new
-  addNew () {
+  // New
+  newProduct () {
     this.props.store.dispatch (
-      new_product ( 'New Product', 'Lorem ipsum' )
+      new_product ( 'New product', 'Product description' )
     );
   }
 
-  // Internal Actions
   // Remove
-  remove ( ev, pid ) {
+  removeProduct ( ev, pid ) {
     
     // Removes product
     ev.stopPropagation ();
@@ -165,24 +204,25 @@ export default class ProductsView
   }
 
   // Edit
-  edit ( ev, element ) {
+  editProduct ( ev, element ) {
 
     // Sets state n' sjiz
     ev.stopPropagation ();
     this.setState ({ editing: element.id }, (() => {
 
-      // Checks if fields active
+      // Sets input values
       let label = document.getElementById ('product-input-label');
       let desc = document.getElementById ('product-input-desc');
       label.value = element.label;
       desc.value = element.desc;
+      label.focus ();
 
     }).bind (this));
 
   }
 
   // Save
-  save ( ev, pid ) {
+  saveProduct ( ev, pid ) {
 
     ev.stopPropagation ();
 
@@ -196,6 +236,7 @@ export default class ProductsView
   
   }
 
+
   // Life cycle events
   // On store change
   onStoreChange () {
@@ -206,11 +247,16 @@ export default class ProductsView
     let current = state.products.current;
     let user_role = state.user.info.role;
 
+    // Gets number of children
+    let children = state.processes.elements
+      .map (e => e.product_id);
+
     // Sets state
     this.setState ({ 
       products,
       current,
       user_role,
+      children
     });
 
   }

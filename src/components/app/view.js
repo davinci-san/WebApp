@@ -38,6 +38,15 @@ export default class ViewComponent
             </div>
           }
 
+          { this.props.edit != null && 
+            <div className="topbar-button edit" onClick={this.props.edit.bind (this)}>
+              <svg viewBox="0 0 24 24" className="inner">
+                <use xlinkHref="#icon-edit">
+                </use>
+              </svg>
+            </div>
+          }
+
           { this.props.previous_view != null &&
             <div className="topbar-button close" onClick={this.close.bind (this)}>
               <svg viewBox="0 0 24 24" className="inner">
@@ -46,11 +55,13 @@ export default class ViewComponent
               </svg> 
             </div>
           }
+          
 
         </div>
       </header>
 
-      <div className="view-body">
+      <div className="view-body"
+        onMouseMove={this.props.onMouseMove}>
         { this.props.children }
       </div>
     </div>

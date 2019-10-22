@@ -10,7 +10,8 @@
   height: 100%;
   padding-top: 64px;
 
-  background-color: darken($prim, 4%); 
+  border-right: 1px solid darken($prim, 10%);
+  background-color: darken($prim, 3%); 
   color: $tert;
 
   .view-header {
@@ -22,11 +23,10 @@
 
     background-color: $prim;
     color: $tert;
-    border-left: 1px solid darken($prim, 4%);
-    border-right: 1px solid darken($prim, 4%);
     box-shadow: 0 2px 4px rgba(0,0,0,.05);
+    overflow-y: hidden;
 
-    z-index: 9;
+    z-index: 10;
 
     .label {
 
@@ -46,6 +46,13 @@
       position: absolute;
       top: 0; right: 0;
       width: auto; height: 64px;
+
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -khtml-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
 
       .topbar-button {
 
@@ -67,6 +74,12 @@
           height: 24px;
           fill: $tert;
   
+        }
+
+        &.edit .inner {
+          
+          height: 18px;
+
         }
 
         &.close .inner {
@@ -105,7 +118,7 @@
 
   &:nth-child(2n) { 
     
-    background-color: darken($prim, 2%); 
+    background-color: darken($prim, 5%); 
     color: $tert; 
 
   }
