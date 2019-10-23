@@ -50,6 +50,7 @@
     background-color: $prim;
 
     box-shadow: 0px 2px 3px rgba(0,0,0,.04);
+    transition: height 180ms $trans-base;
 
     .grid-header {
 
@@ -58,13 +59,36 @@
       border-bottom: 1px solid rgba($tert, .2);
       
       text-align: left;
+      text-transform: uppercase;
       padding-left: 32px;
-      font-weight: 900;
+      font-weight: 300;
       font-size: 14px;
       line-height: 64px;
 
-      // box-shadow: 0px 2px 3px rgba(0,0,0,.06);
+      box-shadow: 0px 2px 3px rgba(0,0,0,.06);
       overflow-y: hidden;
+      cursor: pointer;
+
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -khtml-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+
+      .closed-icon {
+
+        position: absolute;
+        top: 50%; right: calc(66px + 22px);
+        transform: translateY(-50%) rotate(180deg);
+        
+        opacity: 0;
+        transition: opacity 180ms $trans-base;
+        
+        fill: $seco;
+        width: 16px;
+
+      }
 
       .add-new {
 
@@ -75,14 +99,7 @@
         border-top-width: 0;
         border-bottom-width: 0;
         cursor: pointer;
-
-        -webkit-touch-callout: none;
-        -webkit-user-select: none;
-        -khtml-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
-
+        
         svg {
 
           position: absolute;
@@ -94,17 +111,50 @@
 
         }
 
-        &:hover svg {
+        &:hover {
+          
+          background-color: rgba($tert, .02);
 
-          fill: $tert;
+          svg {
+
+            fill: $tert;
+
+          }
 
         }
 
         &:active {
 
-          background-color: lighten($tert, 60%);
+          background-color: rgba($tert, .08);
 
         }
+
+      }
+
+      &:hover .closed-icon {
+
+        right: calc(66px + 20px);
+        width: 20px;
+        fill: $tert;
+
+      }
+
+    }
+
+    .grid-body {
+
+      position: absolute;
+      top: 64px; left: 0;
+      width: 100%;
+      overflow: hidden;
+
+      transition: 180ms $trans-base;
+
+      .grid-body-inner {
+
+        position: absolute;
+        bottom: 0; left: 0;
+        width: 100%;
 
       }
 
@@ -117,19 +167,46 @@
       border-bottom: 1px solid rgba($tert, .1);
       text-align: left;
 
-      .label {
+      .fields {
+        .label {
 
-        float: left;
-        border-right: 1px solid rgba($tert, .1);
-        padding-left: 32px;
+          float: left;
+          border-right: 1px solid rgba($tert, .1);
+          padding-left: 32px;
 
+        }
+
+        .value {
+
+          padding-left: 32px;
+
+        }
+
+        input {
+
+          color: $tert;
+          outline: none;
+          font-family: $font-stack;
+          font-weight: 300;
+          font-size: 12px;
+
+          width: calc(100% - 16px);
+          margin-left: -8px;
+          padding: 2px 8px;
+          border: 1px solid darken($prim, 8%);
+
+          #process-property-label {
+
+          }
+
+          #process-property-value {
+
+          }
+
+        }
       }
 
-      .value {
 
-        padding-left: 32px;
-
-      }
 
       .action-buttons {
 
@@ -154,16 +231,26 @@
             position: absolute;
             top: 50%; left: 50%;
             transform: translate(-50%,-50%);
-
-            transition: 120ms $trans-base;
             fill: $seco;
 
           }
 
-          &:hover svg {
+          &:hover {
 
-            fill: $tert;
+            background-color: rgba($tert, .02);
+          
+            svg {
 
+              fill: $tert;
+
+            }
+          
+          }
+
+          &:active {
+           
+            background-color: rgba($tert, .08);
+  
           }
 
         }
@@ -172,11 +259,19 @@
 
           right: 0;
           svg { width: 16px; }
+          &:hover svg { fill: $warn; }
 
         }
 
         .edit {
           
+          right: 66px;
+          svg { width: 16px; }
+
+        }
+
+        .save {
+
           right: 66px;
           svg { width: 16px; }
 
@@ -194,6 +289,14 @@
         font-size: 12px;
 
       }
+
+    }
+
+    &.closed {
+
+      height: 64px !important;
+      .grid-body { height: 0 !important; }
+      .closed-icon { opacity: 1; }
 
     }
 

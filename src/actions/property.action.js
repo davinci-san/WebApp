@@ -11,3 +11,9 @@ export const REMOVE_PROPERTY = 'REMOVE_PROPERTY';
 export let remove_property = ( id => {
   return { type: REMOVE_PROPERTY, payload: { id } }
 });
+
+// Edit property
+export const EDIT_PROPERTY = 'EDIT_PROPERTY';
+export let edit_property = (( id, info={} ) => {
+  return { type: EDIT_PROPERTY, payload: { id, info } };
+});

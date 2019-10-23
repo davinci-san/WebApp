@@ -137,15 +137,22 @@
 
       }
 
+      .actions {
+
+        position: absolute;
+        top: 0; right: 0;
+        width: calc(48px * 2);
+        height: 100%;
+        background-color: $prim;
+
+      }
+
       .action {
 
         position: absolute;
         top: 0;
         width: 48px; height: 100%;
         border-left: 1px solid darken($prim, 4%);
-  
-        transition: 120ms $trans-base;
-        background-color: $prim;
         cursor: pointer;
   
         z-index: 5;
@@ -186,12 +193,16 @@
           position: absolute;
           top: 50%; left: 50%;
           transform: translate(-50%,-50%);
-  
-          transition: 120ms $trans-base;
+
           width: 16px;
           fill: $seco;
+
+          cursor: pointer;
   
         }
+
+        &:hover { background-color: rgba($tert, .02); }
+        &:active { background-color: rgba($tert, .08); }
 
       }
   

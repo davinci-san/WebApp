@@ -2,7 +2,9 @@
 
 // Imports
 import {
-  ADD_PROPERTY, REMOVE_PROPERTY
+  ADD_PROPERTY, 
+  REMOVE_PROPERTY,
+  EDIT_PROPERTY,
 } from '../actions/property.action';
 
 // Initial states
@@ -38,6 +40,25 @@ export default (( state=init_state,action ) => {
       for (let n = 0; n < e.length; n ++) {
         if (e[n].id == action.payload.id) {
           e.splice (n, 1); break;
+        }
+      }
+
+      // Returns
+      return Object.assign ({}, state, {
+        elements: e,
+      });
+
+    }
+
+    // Edit property
+    case EDIT_PROPERTY: {
+
+      // Finds and overrides property
+      let e = state.elements.concat ([]);
+      for (let n = 0; n < e.length; n ++) {
+        if (e[n].id == action.payload.id) {
+          e[n] = Object.assign (e[n], action.payload.info); 
+          break;
         }
       }
 

@@ -189,6 +189,7 @@
       top: 0; right: 0;
       width: 48px; height: 100%;
       border-left: 1px solid darken($prim, 4%);
+      background-color: $prim;
 
       -webkit-touch-callout: none;
       -webkit-user-select: none;
@@ -203,7 +204,6 @@
         left: 0;
         width: 100%; height: calc(100% / 2);
 
-        transition: 120ms $trans-base;
         background-color: $prim;
         border-top: 1px solid darken($prim, 4%);
         cursor: pointer;
@@ -252,6 +252,10 @@
           fill: $seco;
 
         }
+
+
+        &:hover { background-color: rgba($tert, .02);}
+        &:active { background-color: rgba($tert, .08); }
 
         &.remove:hover .inner { fill: $warn; }
         &.drag:hover .inner { fill: $tert; }
