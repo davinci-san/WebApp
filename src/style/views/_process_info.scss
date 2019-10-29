@@ -50,7 +50,13 @@
     background-color: $prim;
 
     box-shadow: 0px 2px 3px rgba(0,0,0,.04);
-    transition: height 180ms $trans-base;
+    // transition: height 180ms $trans-base;
+
+    &#process-steps {
+
+      margin-top: 32px;
+
+    }
 
     .grid-header {
 
@@ -59,9 +65,8 @@
       border-bottom: 1px solid rgba($tert, .2);
       
       text-align: left;
-      text-transform: uppercase;
       padding-left: 32px;
-      font-weight: 300;
+      font-weight: 900;
       font-size: 14px;
       line-height: 64px;
 
@@ -83,7 +88,7 @@
         transform: translateY(-50%) rotate(180deg);
         
         opacity: 0;
-        transition: opacity 180ms $trans-base;
+        // transition: opacity 180ms $trans-base;
         
         fill: $seco;
         width: 16px;
@@ -99,6 +104,8 @@
         border-top-width: 0;
         border-bottom-width: 0;
         cursor: pointer;
+
+        transition: 120ms $trans-base;
         
         svg {
 
@@ -148,7 +155,7 @@
       width: 100%;
       overflow: hidden;
 
-      transition: 180ms $trans-base;
+      // transition: 180ms $trans-base;
 
       .grid-body-inner {
 
@@ -168,9 +175,29 @@
       text-align: left;
 
       .fields {
+
+        &.numbered { 
+        
+          padding-left: 66px; 
+        
+        }
+
+        .number {
+
+          position: absolute;
+          top: 0; left: 0;
+          width: 66px; height: 64px;
+          border-right: 1px solid rgba($tert, .1);
+
+          line-height: 48px;
+          text-align: center;
+          font-weight: 300;
+          font-size: 12px;
+
+        }
+        
         .label {
 
-          float: left;
           border-right: 1px solid rgba($tert, .1);
           padding-left: 32px;
 
@@ -195,15 +222,32 @@
           padding: 2px 8px;
           border: 1px solid darken($prim, 8%);
 
-          #process-property-label {
+        }
 
-          }
+        .label,
+        .value {
+          
+          display: inline-block;
+          width: calc((100% - 66px * 2) / 2); height: 100%;
+          font-weight: 300;
+          line-height: 48px;
+          font-size: 12px;
+  
+        }
 
-          #process-property-value {
+        &.single .label {
 
-          }
+          width: 100%;
+          border: 0px solid transparent;
 
         }
+
+        &.single input {
+
+          width: calc(100% - 66px * 2 - 16px);
+
+        }
+
       }
 
 
@@ -279,16 +323,6 @@
 
       }
 
-      .label,
-      .value {
-        
-        display: inline-block;
-        width: calc((100% - 66px * 2) / 2); height: 100%;
-        font-weight: 300;
-        line-height: 48px;
-        font-size: 12px;
-
-      }
 
     }
 
