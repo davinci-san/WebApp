@@ -94,9 +94,9 @@ export default (( state=init_state,action ) => {
       };
 
       // Updates info
-      for (let n = 0; n < action.payload.ids; n ++) {
+      for (let n = 0; n < action.payload.ids.length; n ++) {
         let i = ef (action.payload.ids[n]);
-        e[i] = Object.assign ({}, e[i], action.payload.info [n]);
+        e[i] = Object.assign (e[i], action.payload.info [n]);
       }
 
       // Returns

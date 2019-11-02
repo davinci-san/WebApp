@@ -24,6 +24,7 @@ export default (( state=init_state, action ) => {
           
           id: state.id_counter,
           pid: action.payload.pid,
+          uid: action.payload.uid,
           label: action.payload.label,
           content: action.payload.content,
 

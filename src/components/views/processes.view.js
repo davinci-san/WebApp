@@ -328,9 +328,16 @@ export default class ProcessesView
   // Remove
   removeProcess (ev, id) {
     ev.stopPropagation ();
-    this.props.store.dispatch (
-      remove_process (id)
-    );
+    
+    // If deleting open process
+    if (id == this.state.current) { 
+      this.props.store.dispatch (set_current_process (null)); 
+      this.props.store.dispatch (switch_view ('v_products'));
+    }
+
+    // Actually removes process
+    this.props.store.dispatch (remove_process (id));
+  
   }
 
   // Edit

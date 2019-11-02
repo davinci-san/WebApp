@@ -2,7 +2,7 @@
 
 // Add note
 export const ADD_NOTE = 'ADD_NOTE';
-export let add_note = (( pid, label='Untitled', content='No content' ) => {
+export let add_note = (( pid, uid, label='Untitled', content='No content' ) => {
   return { type: ADD_NOTE, payload: { pid, label, content } };
 });
 

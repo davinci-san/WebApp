@@ -55,8 +55,9 @@ export default hot (module) (class AppInstance
   // Component did mount
   componentDidMount () {
     this.props.store.dispatch ( sign_in ({
+      id: 0, name: 'Aske Kjøller Lange',
       role: 0, mail: '', 
-    }, null ))
+    }, null ));
   }
 
 })

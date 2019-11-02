@@ -1,0 +1,170 @@
+
+
+// Notes
+.notes {
+
+  margin-top: 48px;
+
+  .add {
+  
+    padding-top: 48px;
+    padding-bottom: 48px;
+    background-color: $prim;
+    border: 1px solid rgba($tert, .2);
+    box-shadow: 0px 2px 3px rgba(0,0,0,.04);
+
+    width: calc(100% - 64px);
+    margin-left: 32px;
+
+    .title {
+      
+      position: relative;
+      text-align: left;
+      font-size: 16px;
+      // font-weight: 300;
+      margin-bottom: 16px;
+      margin-left: 120px;
+      line-height: 1;
+
+      .submit {
+
+        position: absolute;
+        bottom: -8px; right: 120px;
+
+        width: fit-content;
+        padding: 8px 12px;
+        font-size: 12px;
+        font-weight: 300;
+        text-transform: uppercase;
+        color: $seco;
+        background-color: $prim;
+        border: 1px solid darken($prim, 10%);
+        cursor: pointer;
+
+        &:hover {
+
+          color: $tert;
+          border-color: rgba($tert, .4);
+
+        }
+
+        &:active {
+
+          background-color: rgba($tert, .1);
+
+        }
+
+      }
+
+    }
+
+    .content-field {
+
+      height: 80px;
+      margin-top: 8px;
+      resize: none;
+
+    }
+
+    .label-field,
+    .content-field {
+
+      display: block;
+      width: calc(100% - 240px);
+      margin-left: 120px;
+
+      color: $tert;
+      outline: none;
+      font-family: $font-stack;
+      font-weight: 300;
+      font-size: 12px;
+
+      padding: 8px 12px;
+      border: 1px solid darken($prim, 8%);
+
+    }
+
+    .submit {
+
+    }
+
+  }
+
+  .elements {
+
+    position: relative;
+    width: calc(100% - 64px);
+    margin-left: 32px;
+
+
+    margin-top: 16px;
+
+
+    .element {
+
+      position: relative;
+      width: 100%;
+      height: auto;
+      
+      margin-bottom: 16px;
+      width: calc(100%);
+
+      .author-image {
+
+        position: absolute;
+        top: 50%; left: calc(128px / 2);
+        transform: translate(-50%,-50%);
+        
+        width: 52px;
+        height: 52px;
+        background-color: rgba($tert, .5);
+        border-radius: 50%;
+
+      }
+
+      .content {
+
+        position: relative;
+        width: 100%;
+        min-height: 120px;
+
+        background-color: $prim;
+        border: 1px solid rgba($tert, .2);
+        box-shadow: 0px 2px 3px rgba(0,0,0,.04);
+
+        padding: 16px 24px;
+        padding-left: 128px;
+        
+        text-align: left;
+        font-weight: 300;
+
+        .label {
+
+          font-size: 16px;
+
+        }
+
+        .author {
+
+          position: absolute;
+          right: 24px;
+          top: 20px;
+          color: rgba($tert, .6);
+          font-size: 11px;
+
+        }
+
+        .value {
+
+          margin-top: 8px;
+          font-size: 12px;
+
+        }
+
+      }
+
+    }
+
+  }
+
+}

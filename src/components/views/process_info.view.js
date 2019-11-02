@@ -3,8 +3,11 @@
 // Imports
 import React from 'react';
 import View from '../app/view';
+
 import Properties from '../usables/properties.usable';
 import Guide from '../usables/guide.usable';
+import Notes from '../usables/notes.usable';
+
 import { switch_view } from '../../actions/navigation.action';
 import { set_current_process } from '../../actions/process.action';
 
@@ -49,6 +52,7 @@ export default class ProcessInfoView
 
       <Properties store={this.props.store} />
       <Guide store={this.props.store} />
+      <Notes store={this.props.store} />
 
     </View>
   )}

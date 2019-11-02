@@ -6,7 +6,7 @@
 // Fields
 $font-stack: 'Poppins', sans-serif;
 $prim: #FFFFFF;
-$seco: #606060;
+$seco: #888888;
 $tert: #1e9aa3;
 $warn: #c44a64;
 
@@ -48,3 +48,6 @@ body {
 @import './views/products';
 @import './views/processes';
 @import './views/process_info';
+
+@import './usables/grid';
+@import './usables/notes';

@@ -2,7 +2,7 @@
 
 // Imports
 import React from 'react';
-import Grid from './grid.usable';
+import Grid from './subusables/grid.usable';
 
 import { 
   add_step, 
