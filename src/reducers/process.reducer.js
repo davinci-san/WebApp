@@ -2,6 +2,9 @@
 
 // Imports
 import {
+
+  INITIATE_FETCH_PROCESSES,
+  FINALIZE_FETCH_PROCESSES,
   
   NEW_PROCESS,
   REMOVE_PROCESS,
@@ -13,14 +16,61 @@ import {
 
 // Initial state
 const init_state = {
+
+  fetching: true,
+  creating: false,
+
   current: null,
-  id_counter: 0,
   elements: [ ],
+
 };
 
 // Processes reducer
 export default (( state=init_state,action ) => {
   switch (action.type) {
+
+    // Fetch processes
+    // Initiate fetch processes
+    case INITIATE_FETCH_PROCESSES: {
+      return Object.assign ({}, state, {
+        fetching: true,
+      });
+    }
+
+    // Finalize fetch processes
+    case FINALIZE_FETCH_PROCESSES: {
+      
+      // Cleans data
+      let elements = action.payload.elements.map (e => {
+        return { 
+        
+          id: e._id, 
+          product_id: e.product_id,
+
+          label: e.label, 
+          desc: e.description,
+          index: e.index,
+
+        };
+      });
+
+      // Checks for duplicates
+      for (let n = 0; n < elements.length; n ++) {
+        for (let i = 0; i < state.elements.length; i ++) {
+          if (elements[n].id == state.elements[i].id) {
+            elements.splice (n,1); n --;
+          }
+        }
+      }
+
+      // Returns
+      return Object.assign ({}, state, {
+        fetching: false,
+        elements: state.elements.concat (elements)
+      });
+
+    }
+
 
     // New process
     case NEW_PROCESS: {
@@ -33,9 +83,6 @@ export default (( state=init_state,action ) => {
           label: action.payload.label,
           desc: 'Description',
           index: 'new',
-
-          prop_id_counter: 0,
-          note_id_counter: 0,
 
           props: [ ],
           notes: [ ],

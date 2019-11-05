@@ -13,11 +13,17 @@ import {
 
 // Products
 import { 
+  fetch_products,
   set_current_product, 
   new_product, 
   remove_product,
   edit_product,
 } from '../../actions/product.action';
+
+// Processes
+import {
+  fetch_processes
+} from '../../actions/process.action';
 
 
 // Products view
@@ -30,6 +36,11 @@ export default class ProductsView
     super (props);
     this.state = { 
 
+      fetching: true,
+      creating: false,
+
+      signed_in: false,
+      user_token: null,
       user_role: null,
       current: null,
 
@@ -38,7 +49,6 @@ export default class ProductsView
       deleting: null,
       editing: null,
 
-      
     };
   }
 
@@ -48,7 +58,16 @@ export default class ProductsView
     <View label="products" 
       id="v_products" 
       store={this.props.store} 
-      add={this.newProduct.bind (this)}>
+      add={this.newProduct.bind (this)}
+      creating={this.state.creating}
+      fetching={this.state.fetching}>
+
+      <div className="background-icon">
+        <svg viewBox="0 0 24 24">
+          <use xlinkHref='#icon-products'>
+          </use>
+        </svg>
+      </div>
 
       { this.state.products.length>0 &&
         <div className="all-products">
@@ -75,16 +94,16 @@ export default class ProductsView
       <div className="container">
 
         <div className="left-side">
-          <div className="overlay"></div>
-          <div className="inner">
-            { this.state.children.filter (c => c == e.id).length }
-          </div>
+          <svg viewBox="0 0 24 24">
+            <use xlinkHref="#icon-products">
+            </use>
+          </svg>
         </div>
 
         { this.state.editing!=e.id &&
           <div className="right-side">
             <div className="label">{e.label}</div>
-            <div className="desc">{e.desc}</div>
+            <div className="desc">{e.description}</div>
           </div>
         }
 
@@ -176,13 +195,16 @@ export default class ProductsView
   openProduct (id, pid) {
     this.props.store.dispatch ( switch_view (id) );
     this.props.store.dispatch ( set_current_product (pid) );
+    this.props.store.dispatch ( fetch_processes (this.state.user_token, pid) );
   }
 
   // New
   newProduct () {
-    this.props.store.dispatch (
-      new_product ( 'New product', 'Product description' )
-    );
+    this.props.store.dispatch ( new_product ( 
+      this.state.user_token, 
+      'New product', 
+      'Product description' 
+    ));
   }
 
   // Remove
@@ -191,7 +213,7 @@ export default class ProductsView
     // Removes product
     ev.stopPropagation ();
     this.props.store.dispatch (
-      remove_product ( pid )
+      remove_product ( this.state.user_token, pid )
     );
 
     // May translate back to sidebar
@@ -214,7 +236,7 @@ export default class ProductsView
       let label = document.getElementById ('product-input-label');
       let desc = document.getElementById ('product-input-desc');
       label.value = element.label;
-      desc.value = element.desc;
+      desc.value = element.description;
       label.focus ();
 
     }).bind (this));
@@ -228,11 +250,17 @@ export default class ProductsView
 
     // Fetches values
     let label = document.getElementById ('product-input-label').value;
-    let desc = document.getElementById ('product-input-desc').value;
+    let description = document.getElementById ('product-input-desc').value;
 
     // Dispatches n' sets state
-    this.props.store.dispatch ( edit_product ( pid, label, desc ) );
-    this.setState ({ editing: null });
+    this.props.store.dispatch ( edit_product ( this.state.user_token, pid, {
+      label, description
+    }));
+
+    // Sets state
+    this.setState ({ 
+      editing: null 
+    });
   
   }
 
@@ -243,29 +271,57 @@ export default class ProductsView
 
     // Extracts data
     let state = this.props.store.getState ();
+    let fetching = state.products.fetching;
+    let creating = state.products.creating;
     let products = state.products.elements;
     let current = state.products.current;
-    let user_role = state.user.info.role;
 
+    let user_token = state.user.token;
+    let user_role = state.user.info.role;
+    
     // Gets number of children
     let children = state.processes.elements
-      .map (e => e.product_id);
+    .map (e => e.product_id);
+    
+    // Fetch products related
+    let x_signed_in = this.state.signed_in;
+    let signed_in = state.user.signed_in;
 
     // Sets state
-    this.setState ({ 
+    this.setState ({
+
+      fetching,
+      creating,
+
+      signed_in,
+      user_token,
+      user_role,
+      
       products,
       current,
-      user_role,
-      children
+      children,
+      
+    }, _ => {
+
+      // Fetches products
+      if (signed_in && !x_signed_in) {
+        this.props.store.dispatch (
+          fetch_products (user_token)
+        );
+      }
+
     });
 
   }
 
   // Component did mount
   componentDidMount () {
+    
+    // Subscribes to store
     this.unsub = this.props.store.subscribe (
       this.onStoreChange.bind (this)
-    );
+    ); this.onStoreChange ();
+
   }
 
   // Component will unmount

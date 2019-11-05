@@ -22,6 +22,7 @@ export default class ViewComponent
   render () { return (
     
     <div className={'view'+(this.state.active?' active':'')} id={this.props.id}>
+      
       <header className="view-header">
         <div className="label">
           {this.props.label}
@@ -30,11 +31,23 @@ export default class ViewComponent
         <div className="topbar-buttons">
 
           { this.props.add != null &&
-            <div className="topbar-button add" onClick={this.props.add.bind (this)}>
-              <svg viewBox="0 0 24 24" className="inner">
-                <use xlinkHref="#icon-add">
-                </use>
-              </svg>
+            <div className={'topbar-button add'+(this.props.creating?' creating':'')} 
+              onClick={_=>{if(!this.props.creating) { this.props.add(); }}}>
+              
+              { !this.props.creating &&
+                <svg viewBox="0 0 24 24" className="inner">
+                  <use xlinkHref="#icon-add">
+                  </use>
+                </svg>
+              }
+
+              { this.props.creating &&
+                <svg viewBox="0 0 16 16" className="inner">
+                  <use xlinkHref="#icon-loading">
+                  </use>
+                </svg>
+              }
+
             </div>
           }
 
@@ -60,9 +73,18 @@ export default class ViewComponent
         </div>
       </header>
 
-      <div className="view-body"
+      <div className={'view-body'+(this.props.fetching?' loading':'')}
         onMouseMove={this.props.onMouseMove}>
+        
         { this.props.children }
+
+        <div className="loader">
+          <svg viewBox="0 0 16 16" className="inner">
+            <use xlinkHref="#icon-loading">
+            </use>
+          </svg>
+        </div>
+
       </div>
     </div>
 

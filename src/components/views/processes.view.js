@@ -36,6 +36,9 @@ export default class ProcessesView
     super (props);
     this.state = { 
 
+      fetching: true,
+      creating: false,
+
       current: null,
       elements: [ ],
 
@@ -68,7 +71,9 @@ export default class ProcessesView
       store={this.props.store} 
       previous_view="sidebar" 
       close_callback={this.onClose.bind (this)}
-      add={this.newProcess.bind (this)}>
+      add={this.newProcess.bind (this)}
+      fetching={this.state.fetching}
+      creating={this.state.creating}>
 
       { this.state.elements.length>0 &&
         <div className={'elements'+(this.state.drag.id!=null?' dragging':'')}>
@@ -396,6 +401,8 @@ export default class ProcessesView
 
     // Extracts data
     let state = this.props.store.getState ();
+    let fetching = state.processes.fetching;
+    let creating = state.processes.creating;
     let current = state.processes.current;
     let current_product = state.products.current;
 
@@ -425,6 +432,9 @@ export default class ProcessesView
 
     // Sets state
     this.setState ({
+
+      fetching,
+      creating,
 
       current, 
       elements: re,

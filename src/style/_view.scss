@@ -90,6 +90,15 @@
   
         &:hover { background-color: rgba($tert, .02); .inner { fill: $tert; } }
         &:active { background-color: rgba($tert, .08); }
+
+        &.add.creating .inner {
+
+          top: calc(50% - 8px);
+          left: calc(50% - 8px);
+          animation: infinite 1500ms $trans-base loader;
+          height: 16px;
+
+        }
   
       }
 
@@ -113,6 +122,54 @@
 
     overflow-x: hidden;
     overflow-y: scroll; 
+
+    .loader {
+
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+
+      background-color: rgba(darken($prim, 5%),.9);
+      z-index: 9;
+
+      opacity: 0;
+      transition: 250ms $trans-base;
+      pointer-events: none;
+
+      .inner {
+
+        display: none;
+        position: absolute;
+        top: calc(45% - 16px); 
+        left: calc(50% - 16px);
+
+        width: 32px;
+        fill: $tert;
+
+      }
+
+    }
+
+    &.loading {
+
+      pointer-events: none;
+      overflow-y: hidden;
+      
+      .loader { 
+        
+        opacity: 1; 
+
+        .inner {
+        
+          display: block;
+          animation: infinite 1500ms $trans-base loader;
+        
+        }
+
+      }
+
+    }
 
   }
 

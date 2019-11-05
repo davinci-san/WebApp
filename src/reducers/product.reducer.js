@@ -2,37 +2,76 @@
 
 // Imports
 import {
-  NEW_PRODUCT,
+
+  INITIATE_FETCH_PRODUCTS,
+  FINALIZE_FETCH_PRODUCTS,
+
+  INITIATE_NEW_PRODUCT,
+  FINALIZE_NEW_PRODUCT,
+
   REMOVE_PRODUCT,
   EDIT_PRODUCT,
   SET_CURRENT_PRODUCT,
+
 } from '../actions/product.action';
 
 // Initial state
 const init_state = {
-  id_counter: 0,
+  
+  fetching: false,
+  creating: false,
+  
   current: null,
   elements: [ ],
+
 };
 
 // Products reducer
 export default (( state=init_state,action ) => {
   switch (action.type) {
 
-    // New Product
-    case NEW_PRODUCT: {
+    // Fetch products
+    // Initiate fetch products
+    case INITIATE_FETCH_PRODUCTS: {
       return Object.assign ({}, state, {
-        id_counter: state.id_counter+1,
+        fetching: true,
+      });
+    }
+
+    // Finalize fetch products
+    case FINALIZE_FETCH_PRODUCTS: {
+      return Object.assign ({}, state, {
+        fetching: false,
+        elements: action.payload.elements,
+      });
+    }
+
+
+    // Create products
+    // Initiate new product
+    case INITIATE_NEW_PRODUCT: {
+      return Object.assign ({}, state, {
+        creating: true,
+      });
+    }
+
+    // Finalize new Product
+    case FINALIZE_NEW_PRODUCT: {
+      return Object.assign ({}, state, {
+
+        creating: false,
         elements: state.elements.concat ([{
           
-          id: state.id_counter,
+          id: action.payload.id,
           label: action.payload.label,
-          desc: action.payload.desc,
+          description: action.payload.description,
           processes: 0,
 
         }])
+
       });
     }
+
 
     // Remove product
     case REMOVE_PRODUCT: {
@@ -63,14 +102,12 @@ export default (( state=init_state,action ) => {
         };
       }
 
-      // Sets setters
-      let setters = { };
-      if (action.payload.label) { setters.label=action.payload.label; }
-      if (action.payload.desc) { setters.desc=action.payload.desc; }
-
       // Sets element
       let elements = state.elements;
-      elements[n] = Object.assign ({}, state.elements[n], setters);
+      elements[n] = Object.assign ({}, 
+        state.elements[n], 
+        action.payload.info
+      );
 
       // Returns
       return Object.assign ({}, state, {
