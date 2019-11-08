@@ -25,6 +25,15 @@ export default class Grid
 
     <div className={'grid'+(this.state.closed?' closed':'')} id={this.props.id}>
 
+      { this.props.fetching &&
+        <div className="loader">
+          <svg viewBox="0 0 16 16">
+            <use xlinkHref="#icon-loading">
+            </use>
+          </svg>
+        </div>
+      }
+
       <div className="grid-header" onClick={ev=>this.toggle ()}>
         <div className="label">
           { this.props.elements.length > 0 && this.props.params.label }
@@ -37,10 +46,21 @@ export default class Grid
         </svg>
 
         <div className="add-new" onClick={this.add.bind (this)}>
-          <svg viewBox="0 0 24 24">
-            <use xlinkHref="#icon-add">
-            </use>
-          </svg>
+          
+          { !this.props.creating &&
+            <svg viewBox="0 0 24 24">
+              <use xlinkHref="#icon-add">
+              </use>
+            </svg>
+          }
+
+          { this.props.creating &&
+            <svg viewBox="0 0 16 16" className="loader">
+              <use xlinkHref="#icon-loading">
+              </use>
+            </svg>
+          }
+
         </div>
       </div>
 

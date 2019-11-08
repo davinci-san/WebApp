@@ -6,7 +6,9 @@ import {
   INITIATE_FETCH_PROCESSES,
   FINALIZE_FETCH_PROCESSES,
   
-  NEW_PROCESS,
+  INITIATE_NEW_PROCESS,
+  FINALIZE_NEW_PROCESS,
+
   REMOVE_PROCESS,
   EDIT_PROCESS,
   EDIT_PROCESSES,
@@ -17,7 +19,7 @@ import {
 // Initial state
 const init_state = {
 
-  fetching: true,
+  fetching: false,
   creating: false,
 
   current: null,
@@ -34,6 +36,7 @@ export default (( state=init_state,action ) => {
     case INITIATE_FETCH_PROCESSES: {
       return Object.assign ({}, state, {
         fetching: true,
+        elements: [ ],
       });
     }
 
@@ -49,47 +52,44 @@ export default (( state=init_state,action ) => {
 
           label: e.label, 
           desc: e.description,
-          index: e.index,
+          index: e.index == null ? 'new' : e.index,
 
         };
       });
 
-      // Checks for duplicates
-      for (let n = 0; n < elements.length; n ++) {
-        for (let i = 0; i < state.elements.length; i ++) {
-          if (elements[n].id == state.elements[i].id) {
-            elements.splice (n,1); n --;
-          }
-        }
-      }
-
       // Returns
       return Object.assign ({}, state, {
         fetching: false,
-        elements: state.elements.concat (elements)
+        elements: elements,
       });
 
     }
 
 
     // New process
-    case NEW_PROCESS: {
+    // Initiate new process
+    case INITIATE_NEW_PROCESS: {
       return Object.assign ({}, state, {
-        id_counter: state.id_counter+1,
-        elements: state.elements.concat ([{
-          
-          id: state.id_counter,
-          product_id: action.payload.pid,
-          label: action.payload.label,
-          desc: 'Description',
-          index: 'new',
-
-          props: [ ],
-          notes: [ ],
-
-        }])
-      })
+        creating: true,
+      });
     }
+
+    // Finalize new process
+    case FINALIZE_NEW_PROCESS: {
+      return Object.assign ({}, state, {
+        creating: false,
+        elements: state.elements.concat ([{
+                   
+          id: action.payload.id,
+          product_id: action.payload.product_id,
+          label: action.payload.label,
+          desc: action.payload.description,
+          index: action.payload.index
+          
+        }])
+      });
+    }
+
 
     // Remove process
     case REMOVE_PROCESS: {

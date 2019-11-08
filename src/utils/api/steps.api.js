@@ -9,14 +9,14 @@ import {
 } from './request.api';
 
 
-// Fetch processes
-export let fetch_processes = ( user_token, product_id ) => 
+// Fetch steps
+export let fetch_steps = ( user_token, process_id ) => 
   new Promise (( resolve, reject ) => {
 
-  get_request ('process', [ 
+  get_request ('step', [ 
     { key: 'user_token', value: user_token },
-    { key: 'product_id', value: product_id },
-    { key: 'fields', value: 'label,description,product_id,index' }
+    { key: 'process_id', value: process_id },
+    { key: 'fields', value: 'label,process_id,index' }
   ]).then (
     r => { resolve (r) },
     r => { reject (r) }
@@ -24,12 +24,12 @@ export let fetch_processes = ( user_token, product_id ) =>
 
 });
 
-// New process
-export let new_process = (user_token, product_id, label, description) => 
+// New step
+export let new_step = (user_token, process_id, label) => 
   new Promise (( resolve, reject ) => {
 
-  post_request ( 'process', 
-    `product_id=${product_id}&label=${label}&description=${description}`, 
+  post_request ( 'step', 
+    `process_id=${process_id}&label=${label}`, 
     [ { key: 'Content-Type', value: 'application/x-www-form-urlencoded' } ], 
     user_token
   ).then (
@@ -39,11 +39,11 @@ export let new_process = (user_token, product_id, label, description) =>
 
 });
 
-// Deleting process
-export let delete_process = (user_token, id) =>
+// Deleting step
+export let delete_step = (user_token, id) =>
   new Promise (( resolve, reject ) => {
 
-  delete_request ( 'process', 
+  delete_request ( 'step', 
     `id=${id}`, 
     [ { key: 'Content-Type', value: 'application/x-www-form-urlencoded' } ], 
     user_token
@@ -54,11 +54,11 @@ export let delete_process = (user_token, id) =>
 
 });
 
-// Edit process
-export let edit_process = (user_token, id, info) =>
+// Edit step
+export let edit_step = (user_token, id, info) =>
   new Promise (( resolve, reject ) => {
 
-    put_request ( 'process', 
+    put_request ( 'step', 
       `id=${id}&info=${JSON.stringify (info)}`, 
       [ { key: 'Content-Type', value: 'application/x-www-form-urlencoded' } ], 
       user_token

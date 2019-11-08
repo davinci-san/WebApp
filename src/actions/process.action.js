@@ -32,21 +32,60 @@ export let fetch_processes = (( user_token, product_id ) => dispatch => {
 });
 
 // New Process
-export const NEW_PROCESS = 'NEW_PROCESS';
-export let new_process = (( pid, label='Untitled' ) => {
-  return { type: NEW_PROCESS, payload: { pid, label } };
+export const INITIATE_NEW_PROCESS = 'INITIATE_NEW_PROCESS';
+export const FINALIZE_NEW_PROCESS = 'FINALIZE_NEW_PROCESS';
+export let new_process = (( user_token, pid, label='Untitled', description='Description' ) => dispatch => {
+  
+  // Initiates new process
+  dispatch ({ type: INITIATE_NEW_PROCESS });
+
+  // On fail
+  let on_fail = e => {
+    console.log (e);
+  };
+
+  // On succes
+  let on_succes = r => {
+    dispatch ({ type: FINALIZE_NEW_PROCESS, payload: {
+      id: r._id,
+      product_id: r.product_id,
+      label: r.label,
+      description: r.description,
+      index: r.index,
+    }});
+  };
+
+  // Creates new process
+  API.new_process (user_token, pid, label, description)
+    .then (on_succes, on_fail);
+
+
 });
 
 // Remove Process
 export const REMOVE_PROCESS = 'REMOVE_PROCESS';
-export let remove_process = ( id => {
-  return { type: REMOVE_PROCESS, payload: { id } };
+export let remove_process = ((user_token, id) => dispatch => {
+  
+  // Removes process on client
+  dispatch ({ type: REMOVE_PROCESS, payload: { id } });
+
+  // Remove process on server
+  API.delete_process (user_token, id)
+    .then (_=>{}, e => { console.log (e) });
+
 });
 
 // Edit Process
 export const EDIT_PROCESS = 'EDIT_PROCESS';
-export let edit_process = (( id, info={} ) => {
-  return { type: EDIT_PROCESS, payload: { id, info } };
+export let edit_process = (( user_token, id, info={} ) => dispatch => {
+
+  // Edits process on client
+  dispatch ({ type: EDIT_PROCESS, payload: { id, info } });
+
+  // Edits process on server
+  API.edit_process (user_token, id, info)
+    .then (_=>{}, e => { console.log (e); })
+
 });
 
 // Edit processess

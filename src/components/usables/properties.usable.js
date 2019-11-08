@@ -3,7 +3,14 @@
 // Imports
 import React from 'react';
 import Grid from './subusables/grid.usable';
-import { add_property, edit_property, remove_property } from '../../actions/property.action';
+
+// Actions
+import { 
+  add_property, 
+  edit_property, 
+  remove_property 
+} from '../../actions/property.action';
+
 
 // Properties component
 export default class Properties
@@ -14,8 +21,14 @@ export default class Properties
   constructor (props) {
     super (props);
     this.state = {
+      
+      user_token: null,
+      fetching: false,
+      creating: false,
+
       elements: [ ],
-      pid: null,
+      process_id: null,
+
     };
   }
 
@@ -33,6 +46,8 @@ export default class Properties
         addCb={this.add.bind (this)}
         saveCb={this.save.bind (this)}
         removeCb={this.remove.bind (this)} 
+        fetching={this.state.fetching}
+        creating={this.state.creating}
       
       />
     </div>
@@ -46,14 +61,21 @@ export default class Properties
 
     // Extracts
     let state = this.props.store.getState ();
+    
+    let user_token = state.user.token;
+    let fetching = state.properties.fetching;
+    let creating = state.properties.creating;
+
     let elements = state.properties.elements;
     let current = state.processes.current;
 
     // Sets state
     this.setState ({
-      pid: current,
+      user_token,
+      fetching, creating,
+      process_id: current, 
       elements: elements.filter (e => {
-        return e.pid == current;
+        return e.process_id == current;
       })
     });
 
@@ -75,23 +97,26 @@ export default class Properties
   // Actions
   // Add property
   add () {
-    this.props.store.dispatch (
-      add_property (this.state.pid)
-    );
+    this.props.store.dispatch ( add_property (
+      this.state.user_token,
+      this.state.process_id
+    ));
   }
 
   // Save property
   save (elem, label, value) {
-    this.props.store.dispatch (
-      edit_property (elem.id, { label, value })
-    );
+    this.props.store.dispatch ( edit_property (
+      this.state.user_token,   
+      elem.id, { label, value }
+    ));
   }
 
   // Remove property
   remove (elem) {
-    this.props.store.dispatch (
-      remove_property (elem.id)
-    );
+    this.props.store.dispatch ( remove_property (
+      this.state.user_token,
+      elem.id
+    ));
   }
 
 }

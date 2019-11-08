@@ -11,36 +11,32 @@ export let fetch_products = ( user_token => dispatch => {
   // Dispatches initiate
   dispatch ({ type: INITIATE_FETCH_PRODUCTS });
 
-  window.setTimeout (() => {
+  // On fail
+  let on_fail = r => {
+    return;
+  };
 
-    // On fail
-    let on_fail = r => {
-      return;
-    };
+  // On succes
+  let on_succes = r => {
+    
+    // Cleans data
+    let elements = r.map (e => { return { 
+      id: e._id, 
+      label: e.label, 
+      description: e.description 
+    }});
 
-    // On succes
-    let on_succes = r => {
-      
-      // Cleans data
-      let elements = r.map (e => { return { 
-        id: e._id, 
-        label: e.label, 
-        description: e.description 
-      }});
+    // Dispatches
+    dispatch ({ 
+      type: FINALIZE_FETCH_PRODUCTS, 
+      payload: { elements }
+    });
 
-      // Dispatches
-      dispatch ({ 
-        type: FINALIZE_FETCH_PRODUCTS, 
-        payload: { elements }
-      });
+  };
 
-    };
-
-    // Fetches products
-    API.fetch_products ( user_token )
-      .then (on_succes, on_fail);
-
-  }, 1000);
+  // Fetches products
+  API.fetch_products ( user_token )
+    .then (on_succes, on_fail);
 
 });
 
@@ -52,27 +48,23 @@ export let new_product = (( user_token, label='', desc='' ) => dispatch => {
   // Initiates creation process
   dispatch ({ type: INITIATE_NEW_PRODUCT });
 
-  window.setTimeout (() => {
+  // On fail
+  let on_fail = e => {
+    console.log (e);
+  };
 
-    // On fail
-    let on_fail = e => {
-      console.log (e);
-    };
+  // On succes
+  let on_succes = r => {
+    dispatch ({ type: FINALIZE_NEW_PRODUCT, payload: {  
+      id: r._id,
+      label: r.label,
+      description: r.description,
+    }});
+  };
 
-    // On succes
-    let on_succes = r => {
-      dispatch ({ type: FINALIZE_NEW_PRODUCT, payload: {  
-        id: r._id,
-        label: r.label,
-        description: r.description,
-      }});
-    };
-
-    // Creates the product on the server
-    API.new_product (user_token, label, desc)
-      .then (on_succes, on_fail);
-
-  }, 1000);
+  // Creates the product on the server
+  API.new_product (user_token, label, desc)
+    .then (on_succes, on_fail);
 
 });
 

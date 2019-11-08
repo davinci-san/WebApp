@@ -2,35 +2,81 @@
 
 // Imports
 import {
-  ADD_PROPERTY, 
+  
+  INITIATE_FETCH_PROPERTIES,
+  FINALIZE_FETCH_PROPERTIES,
+  
+  INITIATE_ADD_PROPERTY,
+  FINALIZE_ADD_PROPERTY,
+  
   REMOVE_PROPERTY,
   EDIT_PROPERTY,
+
 } from '../actions/property.action';
 
 // Initial states
 const init_state = {
-  id_counter: 0,
+  
+  fetching: false,
+  creating: false,
   elements: [ ],
+
 };
 
 // Property reducer
 export default (( state=init_state,action ) => {
   switch (action.type) {
 
-    // Add property
-    case ADD_PROPERTY: {
+    // Fetch properties
+    // Initiate fetch proprerties
+    case INITIATE_FETCH_PROPERTIES: {
       return Object.assign ({}, state, {
-        id_counter: state.id_counter+1,
+        fetching: true,
+        elements: [ ],
+      });
+    }
+
+    // Finalize fetch properties
+    case FINALIZE_FETCH_PROPERTIES: {
+      return Object.assign ({}, state, {
+        fetching: false,
+        elements: action.payload.elements.map (e => {
+          return {
+
+            id: e._id,
+            process_id: e.process_id,
+            label: e.label,
+            value: e.value,
+
+          };
+        })
+      });
+    }
+
+
+    // Add property
+    // Initiate add property
+    case INITIATE_ADD_PROPERTY: {
+      return Object.assign ({}, state, {
+        creating: true,
+      });
+    }
+
+    // Finalize add property
+    case FINALIZE_ADD_PROPERTY: {
+      return Object.assign ({}, state, {
+        creating: false,
         elements: state.elements.concat ([{
-          
-          id: state.id_counter,
-          pid: action.payload.pid,
+
+          id: action.payload.id,
+          process_id: action.payload.process_id,
           label: action.payload.label,
           value: action.payload.value,
 
         }])
       })
     }
+
 
     // Remove property
     case REMOVE_PROPERTY: {

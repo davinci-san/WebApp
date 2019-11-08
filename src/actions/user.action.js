@@ -14,26 +14,22 @@ export const sign_in = (( mail, pass ) => (dispatch) => {
   // Initiate sign in
   dispatch ({ type: INITIATE_SIGN_IN });
 
-  window.setTimeout (() => {
+  // On success
+  let on_succes = r => {
+    dispatch ({ type: FINALIZE_SIGN_IN, payload: {
+      token: r.user_token, info: { role: r.role }
+    }});
+  };
 
-    // On success
-    let on_succes = r => {
-      dispatch ({ type: FINALIZE_SIGN_IN, payload: {
-        token: r.user_token, info: { role: r.role }
-      }});
-    };
+  // On fail
+  let on_fail = r => { 
+    dispatch ({ type: FAIL_SIGN_IN });
+  };
 
-    // On fail
-    let on_fail = r => { 
-      dispatch ({ type: FAIL_SIGN_IN });
-    };
-
-    // Sends request
-    API.fetch_user_token (mail, pass).then (
-      on_succes, on_fail
-    );
-
-  }, 1000);
+  // Sends request
+  API.fetch_user_token (mail, pass).then (
+    on_succes, on_fail
+  );
 
 });
 

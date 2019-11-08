@@ -25,6 +25,16 @@ import {
   set_current_process
 } from '../../actions/process.action';
 
+// Properties
+import { 
+  fetch_properties 
+} from '../../actions/property.action';
+
+// Steps
+import {
+  fetch_steps
+} from '../../actions/step.action';
+
 
 // Products view
 export default class ProcessesView
@@ -35,6 +45,8 @@ export default class ProcessesView
   constructor (props) {
     super (props);
     this.state = { 
+
+      user_token: null,
 
       fetching: true,
       creating: false,
@@ -320,14 +332,19 @@ export default class ProcessesView
   // Open
   openProcess (view, pid) {
     this.props.store.dispatch ( switch_view (view) );
-    this.props.store.dispatch ( set_current_process (pid) );
+    if (this.props.current != pid) {
+      this.props.store.dispatch ( set_current_process (pid) );
+      this.props.store.dispatch ( fetch_properties ( this.state.user_token, pid ));
+      this.props.store.dispatch ( fetch_steps ( this.state.user_token, pid ));
+    }
   }
 
   // New
   newProcess () {
-    this.props.store.dispatch (
-      new_process (this.state.current_product)
-    );
+    this.props.store.dispatch ( new_process (
+      this.state.user_token,
+      this.state.current_product
+    ));
   }
 
   // Remove
@@ -341,7 +358,9 @@ export default class ProcessesView
     }
 
     // Actually removes process
-    this.props.store.dispatch (remove_process (id));
+    this.props.store.dispatch (remove_process (
+      this.state.user_token, id
+    ));
   
   }
 
@@ -373,9 +392,10 @@ export default class ProcessesView
 
     // Dispatches action
     this.props.store.dispatch (
-      edit_process (id, {
-        label
-      })
+      edit_process (
+        this.state.user_token,
+        id, {label}
+      )
     );
 
     // Sets state
@@ -401,6 +421,7 @@ export default class ProcessesView
 
     // Extracts data
     let state = this.props.store.getState ();
+    let user_token = state.user.token;
     let fetching = state.processes.fetching;
     let creating = state.processes.creating;
     let current = state.processes.current;
@@ -433,6 +454,7 @@ export default class ProcessesView
     // Sets state
     this.setState ({
 
+      user_token,
       fetching,
       creating,
 

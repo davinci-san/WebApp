@@ -38,6 +38,7 @@ export default class ProductsView
 
       fetching: true,
       creating: false,
+      processes_fetching: false,
 
       signed_in: false,
       user_token: null,
@@ -193,9 +194,13 @@ export default class ProductsView
   // Actions
   // Open
   openProduct (id, pid) {
-    this.props.store.dispatch ( switch_view (id) );
-    this.props.store.dispatch ( set_current_product (pid) );
-    this.props.store.dispatch ( fetch_processes (this.state.user_token, pid) );
+    if (!this.state.processes_fetching) {
+      this.props.store.dispatch ( switch_view (id) );
+      if (pid !== this.state.current) {
+        this.props.store.dispatch ( set_current_product (pid) );
+        this.props.store.dispatch ( fetch_processes (this.state.user_token, pid) );
+      }
+    }
   }
 
   // New
@@ -271,6 +276,7 @@ export default class ProductsView
 
     // Extracts data
     let state = this.props.store.getState ();
+    let processes_fetching = state.processes.fetching;
     let fetching = state.products.fetching;
     let creating = state.products.creating;
     let products = state.products.elements;
@@ -278,10 +284,6 @@ export default class ProductsView
 
     let user_token = state.user.token;
     let user_role = state.user.info.role;
-    
-    // Gets number of children
-    let children = state.processes.elements
-    .map (e => e.product_id);
     
     // Fetch products related
     let x_signed_in = this.state.signed_in;
@@ -292,14 +294,14 @@ export default class ProductsView
 
       fetching,
       creating,
-
+      processes_fetching,
+      
       signed_in,
       user_token,
       user_role,
       
       products,
       current,
-      children,
       
     }, _ => {
 

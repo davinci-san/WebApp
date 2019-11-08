@@ -22,10 +22,10 @@ export default class AppInstance
 
     <div className={'sidebar'+(this.state.active?' active':'')}>
       <header className="header">
-        {/* <svg className="logo" viewBox="0 0 512 128.445">
+        <svg className="logo" viewBox="0 0 512 124">
           <use xlinkHref="#icon-logo">
           </use>
-        </svg> */}
+        </svg>
       </header>
 
       <footer className="footer">

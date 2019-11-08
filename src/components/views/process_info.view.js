@@ -24,7 +24,7 @@ export default class ProcessInfoView
         label: '',
         desc: '',
       },
-
+      
       current: null,
       editing: false,
 

@@ -19,8 +19,14 @@ export default class Guide
   constructor (props) {
     super (props);
     this.state = {
+      
+      user_token: null,
+      fetching: false,
+      creating: false,
+      
       elements: [ ],
       pid: null,
+
     };
   }
 
@@ -37,7 +43,9 @@ export default class Guide
         elements={this.state.elements} 
         addCb={this.add.bind (this)}
         saveCb={this.save.bind (this)}
-        removeCb={this.remove.bind (this)} 
+        removeCb={this.remove.bind (this)}
+        fetching={this.state.fetching}
+        creating={this.state.creating}
       
       />
     </div>
@@ -51,11 +59,16 @@ export default class Guide
 
     // Extracts
     let state = this.props.store.getState ();
+    let user_token = state.user.token;
+    let fetching = state.steps.fetching;
+    let creating = state.steps.creating;
     let elements = state.steps.elements;
     let current = state.processes.current;
 
     // Sets state
     this.setState ({
+      user_token,
+      fetching, creating,
       pid: current,
       elements: elements.filter (e => {
         return e.pid == current;
@@ -81,21 +94,21 @@ export default class Guide
   // Add property
   add () {
     this.props.store.dispatch (
-      add_step (this.state.pid)
+      add_step (this.state.user_token, this.state.pid)
     );
   }
 
   // Save property
   save (elem, label ) {
     this.props.store.dispatch (
-      edit_step (elem.id, { label })
+      edit_step (this.state.user_token, elem.id, { label })
     );
   }
 
   // Remove property
   remove (elem) {
     this.props.store.dispatch (
-      remove_step (elem.id)
+      remove_step (this.state.user_token, elem.id)
     );
   }
 
