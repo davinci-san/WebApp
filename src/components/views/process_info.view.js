@@ -52,7 +52,7 @@ export default class ProcessInfoView
 
       <Properties store={this.props.store} />
       <Guide store={this.props.store} />
-      <Notes store={this.props.store} />
+      {/* <Notes store={this.props.store} /> */}
 
     </View>
   )}

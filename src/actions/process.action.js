@@ -90,8 +90,15 @@ export let edit_process = (( user_token, id, info={} ) => dispatch => {
 
 // Edit processess
 export const EDIT_PROCESSES = 'EDIT_PROCESSES';
-export let edit_processes = (( ids=[], info=[{}] ) => {
-  return { type: EDIT_PROCESSES, payload: { ids, info } };
+export let edit_processes = (( user_token, ids=[], info=[{}] ) => dispatch => {
+  
+  // Edits processes on client
+  dispatch ({ type: EDIT_PROCESSES, payload: { ids, info } });
+
+  // Edits processes on server
+  API.edit_process (user_token, ids, info)
+    .then (_=>{}, e => { console.log (e); });
+
 });
 
 // Set Current Process

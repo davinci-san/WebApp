@@ -11,8 +11,11 @@ export default class SectionComponent
   constructor (props) {
     super (props);
     this.state = {
+      
+      current_view: null,
       active: false,
       left: 0,
+
     };
   }
 
@@ -55,28 +58,57 @@ export default class SectionComponent
 
   }
 
+  
+  
   // Life cycle events
+  // On resize
+  onResize (e) {
+
+    let left = this.translateInner (this.state.current_view);
+    let inner = document.querySelectorAll ('#'+this.props.id+' .section-inner') [0];
+    let trans = inner.style.transition;
+    inner.style.transition = '0ms linear !important';
+
+    console.log (left);
+
+    this.setState ({ left }, _ => {
+      inner.style.transition = trans;
+    });
+
+  }
+
   // On store change
   onStoreChange () {
 
     // Extracts data
     let state = this.props.store.getState ();
     let active = state.navigation.current_section == this.props.id;
-    let left = this.translateInner (state.navigation.current_view);
+    let current_view = state.navigation.current_view;
+    let left = this.translateInner (current_view);
+  
 
     // Sets state
     this.setState ({
+      
+      current_view,
       active,
       left,
+
     });
 
   }
 
   // Component did mount
   componentDidMount () {
+  
+    // Subscribes to store
     this.unsub = this.props.store.subscribe (
       this.onStoreChange.bind (this)
     ); this.onStoreChange ();
+      
+    // On resize
+    window.onresize = this.onResize.bind (this);
+  
   }
 
   // Component will unmount

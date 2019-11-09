@@ -55,11 +55,18 @@ export let delete_process = (user_token, id) =>
 });
 
 // Edit process
-export let edit_process = (user_token, id, info) =>
+export let edit_process = (user_token, ids, info) =>
   new Promise (( resolve, reject ) => {
 
+    // Cleans data
+    if (!Array.isArray (ids)) { ids = [ids]; }
+    for (let n = 0; n < info.length; n ++) {
+      if (info[n].id == null) { info[n].id = ids[n]; }
+    }
+ 
+    // Sends request
     put_request ( 'process', 
-      `id=${id}&info=${JSON.stringify (info)}`, 
+      `id=${JSON.stringify(ids)}&info=${JSON.stringify (info)}`, 
       [ { key: 'Content-Type', value: 'application/x-www-form-urlencoded' } ], 
       user_token
     ).then (

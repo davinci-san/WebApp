@@ -272,7 +272,7 @@ export default class ProcessesView
       if (d[n].classList.contains ('drag-placeholder')) continue;
 
       // Fetches id of current element
-      let id = parseInt (d[n].getAttribute ('data-process-id'));
+      let id = d[n].getAttribute ('data-process-id');
 
       // Checks for position
       if (br.y + br.height > sr.y + sr.height) {
@@ -319,9 +319,10 @@ export default class ProcessesView
       }
 
       // Dispatches store action
-      this.props.store.dispatch (
-        edit_processes (ids, info)
-      );
+      this.props.store.dispatch ( edit_processes (
+        this.state.user_token, 
+        ids, info
+      ));
 
     });
 
