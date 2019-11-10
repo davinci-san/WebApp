@@ -45,6 +45,7 @@ export default class ProductsView
       user_role: null,
       current: null,
 
+      search_phrase: '',
       children: [ ],
       products: [ ],
       deleting: null,
@@ -55,82 +56,105 @@ export default class ProductsView
 
   // Renders
   // Main render
-  render () { return (
-    <View label="products" 
-      id="v_products" 
-      store={this.props.store} 
-      add={this.newProduct.bind (this)}
-      creating={this.state.creating}
-      fetching={this.state.fetching}>
+  render () { 
+    
+    // Filters elements
+    let elements = this.state.products.filter (e => {
+      return e.label.toLowerCase().includes (
+        this.state.search_phrase.toLowerCase ()
+      ) || e.description.toLowerCase().includes (
+        this.state.search_phrase.toLowerCase ()
+      );
+    });
 
-      <div className="background-icon">
-        <svg viewBox="0 0 24 24">
-          <use xlinkHref='#icon-products'>
-          </use>
-        </svg>
-      </div>
+    // Returns
+    return (
+      <View label="products" 
+        id="v_products" 
+        store={this.props.store} 
+        add={this.newProduct.bind (this)}
+        search={this.search.bind (this)}
+        creating={this.state.creating}
+        fetching={this.state.fetching}>
 
-      { this.state.products.length>0 &&
-        <div className="all-products">
-          { this.state.products.map (e => this.renderProduct (e)) }
-        </div>
-      }
-
-      { this.state.products.length==0 &&
-        <div className="no-elements">
-          Start by adding a new product!
-        </div>
-      }
-
-    </View>
-  )}
-
-  // Render product
-  renderProduct (e) { return (
-    <div className={'product'
-      +(this.state.current==e.id?' active':'')}
-      onClick={this.openProduct.bind (this, 'v_processes', e.id)}
-      key={e.id}>
-
-      <div className="container">
-
-        <div className="left-side">
+        <div className="background-icon">
           <svg viewBox="0 0 24 24">
-            <use xlinkHref="#icon-products">
+            <use xlinkHref='#icon-products'>
             </use>
           </svg>
         </div>
 
-        { this.state.editing!=e.id &&
-          <div className="right-side">
-            <div className="label">{e.label}</div>
-            <div className="desc">{e.description}</div>
+        { elements.length>0 &&
+          <div className={"all-products"+(this.state.creating?' creating':'')}>
+            { elements.map (e => this.renderProduct (e)) }
+          </div>
+        }
+        { this.state.products.length>0 && elements.length==0 &&
+          <div className="no-elements">
+            No products found, using the search phrase "{this.state.search_phrase}".
           </div>
         }
 
-        { this.state.editing==e.id && 
-          <div className="right-side editing">
-            <div className="label">
-              <input type="text" id="product-input-label" autoComplete="off" 
-                onClick={ev=>{ ev.stopPropagation () }}
-                onKeyDown={ev=>{if (ev.keyCode==13) {this.saveProduct (ev, e.id)}}} />
-            </div>
-
-            <div className="desc">
-              <textarea type="textarea" id="product-input-desc" autoComplete="off" 
-                onClick={ev => { ev.stopPropagation () }} 
-                onKeyUp={ev=> { if (ev.keyCode==16) {this.shift_pressed=false;} }}
-                onKeyDown={ev=> {
-                  
-                  if (this.shift_pressed && ev.keyCode==13) { 
-                    this.saveProduct (ev, e.id); 
-                  } this.shift_pressed = ev.keyCode == 16;
-
-                }} >
-              </textarea>
-            </div>
+        { this.state.products.length==0 &&
+          <div className="no-elements">
+            Start by adding a new product!
           </div>
         }
+
+      </View>
+    )
+  
+  }
+
+  // Render product
+  renderProduct (e) { return (
+    <div className={'product'
+      +(this.state.current==e.id?' active':'')
+      +(this.state.editing==e.id?' editing':'')}
+      onClick={this.openProduct.bind (this, 'v_processes', e.id)}
+      key={e.id}>
+
+      <div className={"container"+(e.new?' new':'')}>
+
+        <div className="background">
+          <div className="left-side">
+            <svg viewBox="0 0 24 24">
+              <use xlinkHref="#icon-products">
+              </use>
+            </svg>
+          </div>
+
+          { this.state.editing!=e.id &&
+            <div className="right-side">
+              <div className="label">{e.label}</div>
+              <div className="desc">{e.description}</div>
+            </div>
+          }
+
+          { this.state.editing==e.id && 
+            <div className="right-side editing">
+              <div className="label">
+                <input type="text" id="product-input-label" autoComplete="off" 
+                  onClick={ev=>{ ev.stopPropagation () }}
+                  onKeyDown={ev=>{if (ev.keyCode==13) {this.saveProduct (ev, e.id)}}} />
+              </div>
+
+              <div className="desc">
+                <textarea type="textarea" id="product-input-desc" autoComplete="off" 
+                  onClick={ev => { ev.stopPropagation () }} 
+                  onKeyUp={ev=> { if (ev.keyCode==16) {this.shift_pressed=false;} }}
+                  onKeyDown={ev=> {
+                    
+                    if (!this.shift_pressed && ev.keyCode==13) { 
+                      this.saveProduct (ev, e.id); 
+                    } this.shift_pressed = ev.keyCode == 16;
+
+                  }} >
+                </textarea>
+              </div>
+            </div>
+          }
+        </div>
 
         { this.state.user_role == 0 &&
           <div className="actions">
@@ -205,11 +229,22 @@ export default class ProductsView
 
   // New
   newProduct () {
+
+    // Scrolls
+    let body = document.querySelectorAll ('#v_products .view-body') [0];
+    let prods = document.querySelectorAll ('#v_products .all-products') [0];
+    window.requestAnimationFrame (() => {
+      body.scrollTop = prods.clientHeight;
+    });
+    
+    // Resets search, n' creates new product
+    this.setState ({ search_phrase: '' });
     this.props.store.dispatch ( new_product ( 
       this.state.user_token, 
       'New product', 
       'Product description' 
     ));
+
   }
 
   // Remove
@@ -267,6 +302,14 @@ export default class ProductsView
       editing: null 
     });
   
+  }
+
+
+  // Search
+  search (e) {
+    this.setState ({
+      search_phrase: e.target.value
+    });
   }
 
 

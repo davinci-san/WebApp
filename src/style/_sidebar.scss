@@ -12,15 +12,18 @@
   background-color: $prim;
   color: $tert;
 
-  transition: 400ms $trans-base;
+  transition: all 400ms $trans-base;
   border-right: 1px solid darken($prim, 8%);
 
   // tmp
   font-weight: 300;
   padding-top: 16px;
 
+  &.notrans {
 
-  // box-shadow: 0 2px 4px rgba(0,0,0,.05);
+    transition-duration: 0ms;
+
+  }
 
   .header {
 

@@ -132,7 +132,8 @@ export default class ProcessesView
 
     <div key={e.id} className={'process'
       +(e.id==this.state.current?' active':'')
-      +(e.id==this.state.drag.id?' dragging':'')} 
+      +(e.id==this.state.drag.id?' dragging':'')
+      +(e.id==this.state.editing?' editing':'')}
       data-process-id={e.id} key={'process-'+e.id}
       onClick={this.openProcess.bind (this, 'v_process_info', e.id)}
       style={this.state.drag.id==e.id?{
@@ -141,26 +142,30 @@ export default class ProcessesView
         'transition':'none'
       }:{}}>
 
-      <div className="drag"
-        onMouseDown={ev=>{this.dragStart (ev, e.id)}}>
-          <svg viewBox="0 0 24 24">
-            <use xlinkHref="#icon-drag">
-            </use>
-          </svg>
-      </div>
+      <div className="background">
 
-      { this.state.editing != e.id &&
-        <div className="label">
-          {e.label}
+        <div className="drag"
+          onMouseDown={ev=>{this.dragStart (ev, e.id)}}>
+            <svg viewBox="0 0 24 24">
+              <use xlinkHref="#icon-drag">
+              </use>
+            </svg>
         </div>
-      }
 
-      { this.state.editing == e.id &&
-        <input type="text" id="process-input-label" 
-          onClick={ev=>{ev.stopPropagation()}}
-          onKeyDown={ev=>{if (ev.keyCode==13) {this.saveProcess(ev, e.id)}}}
-          autoComplete="off" />
-      }
+        { this.state.editing != e.id &&
+          <div className="label">
+            {e.label}
+          </div>
+        }
+
+        { this.state.editing == e.id &&
+          <input type="text" id="process-input-label" 
+            onClick={ev=>{ev.stopPropagation()}}
+            onKeyDown={ev=>{if (ev.keyCode==13) {this.saveProcess(ev, e.id)}}}
+            autoComplete="off" />
+        }
+
+      </div>
 
       <div className="actions">
 

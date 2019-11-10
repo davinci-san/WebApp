@@ -53,7 +53,7 @@
 
       position: relative;
       height: 48px;
-      background-color: $prim;
+      // background-color: $prim;
 
       transition: background-color 200ms $trans-base,
         box-shadow 200ms $trans-base;
@@ -62,13 +62,13 @@
       margin-top: 16px;
       &:nth-child(1) { margin-top: 0; }
       
-      box-shadow: 0 2px 4px rgba(0,0,0,.03);
-      &:hover { box-shadow: 0 3px 4px rgba(0,0,0,.07); }
+      // box-shadow: 0 2px 4px rgba(0,0,0,.03);
+      // &:hover { box-shadow: 0 3px 4px rgba(0,0,0,.07); }
 
       &.active {
         
-        background-color: lighten($tert, 60%); 
-        box-shadow: 0 0 0 rgba(0,0,0,0);
+        // background-color: lighten($tert, 60%); 
+        // box-shadow: 0 0 0 rgba(0,0,0,0);
 
       }
 
@@ -81,6 +81,18 @@
         transition: none;
         box-shadow: 0 2px 6px rgba(0,0,0,.2);
         * { transition: none; }
+
+      }
+
+      .background {
+
+        position: absolute;
+        top: 0; left: 0;
+        width: 100%;
+        height: 100%;
+        transition: 250ms $trans-base;
+        background-color: $prim;
+        box-shadow: 0px 2px 3px rgba(0,0,0,.06);
 
       }
 
@@ -117,14 +129,19 @@
         font-weight: 300;
         font-size: 14px;
 
+        white-space: nowrap;
+        width: calc(100% - 72px - 24px);
+        text-align: left;
+        overflow: hidden;
+
       }
 
       #process-input-label {
 
         position: absolute;
-        top: 50%; left: 62px;
+        top: 50%; left: 66px;
         transform: translateY(-50%);
-        padding: 2px 8px;
+        padding: 2px 4px;
 
         color: $tert;
         outline: none;
@@ -132,8 +149,15 @@
         font-weight: 300;
         font-size: 14px;
 
-        width: calc(100% - 62px - (96px + 12px));
-        border: 1px solid darken($prim, 8);
+        width: calc(100% - 62px - 16px - 8px);
+        border: none;
+        border-bottom: 1px solid rgba($seco, .1);
+
+        &:hover {
+
+          border-bottom-color: rgba($seco, .3);
+
+        }
 
       }
 
@@ -141,9 +165,11 @@
 
         position: absolute;
         top: 0; right: 0;
-        width: calc(48px * 2);
-        height: 100%;
-        background-color: $prim;
+        width: 0;
+        height: calc(100% + 6px);
+        overflow-x: hidden;
+        margin-bottom: 8px;
+        transition: 250ms $trans-base;
 
       }
 
@@ -151,10 +177,10 @@
 
         position: absolute;
         top: 0;
-        width: 48px; height: 100%;
-        border-left: 1px solid darken($prim, 4%);
+        width: 48px; height: 48px;
         cursor: pointer;
-  
+
+        box-shadow: 0px 2px 3px rgba(0,0,0,.15);
         z-index: 5;
 
         -webkit-touch-callout: none;
@@ -166,25 +192,21 @@
 
         &.remove {
 
-          right: 0;
+          left: 52px;
+          background-color: rgba($warn, .75);
 
-          &:hover .inner {
-
-            fill: $warn;
-
-          }
+          &:hover { background-color: rgba($warn, .875); }
+          &:active { background-color: rgba($warn, 1); }
 
         }
 
         &.edit {
 
-          right: 48px;
+          left: 0;
+          background-color: rgba($tert, .75);
 
-          &:hover .inner {
-
-            fill: $tert;
-
-          }
+          &:hover { background-color: rgba($tert, .875); }
+          &:active { background-color: rgba($tert, 1); }
 
         }
 
@@ -195,14 +217,32 @@
           transform: translate(-50%,-50%);
 
           width: 16px;
-          fill: $seco;
+          fill: $prim;
 
           cursor: pointer;
   
         }
 
-        &:hover { background-color: rgba($tert, .02); }
-        &:active { background-color: rgba($tert, .08); }
+        // &:hover { background-color: rgba($tert, .02); }
+        // &:active { background-color: rgba($tert, .08); }
+
+      }
+
+      &:hover:not(.dragging),
+      &.editing {
+
+        .background {
+
+          width: calc(100% - 48px * 2 - 5px * 2);
+          box-shadow: 0px 2px 3px rgba(0,0,0,.1);
+
+        }
+
+        .actions {
+
+          width: calc(48px * 2 + 4px);
+
+        }
 
       }
   

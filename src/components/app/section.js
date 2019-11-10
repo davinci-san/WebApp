@@ -66,13 +66,12 @@ export default class SectionComponent
 
     let left = this.translateInner (this.state.current_view);
     let inner = document.querySelectorAll ('#'+this.props.id+' .section-inner') [0];
-    let trans = inner.style.transition;
-    inner.style.transition = '0ms linear !important';
-
-    console.log (left);
+    inner.classList.add ('notrans');
 
     this.setState ({ left }, _ => {
-      inner.style.transition = trans;
+      window.requestAnimationFrame (() => {
+        inner.classList.remove ('notrans');
+      });
     });
 
   }
@@ -107,7 +106,7 @@ export default class SectionComponent
     ); this.onStoreChange ();
       
     // On resize
-    window.onresize = this.onResize.bind (this);
+    window.addEventListener ('resize', e => { this.onResize (e); });
   
   }
 

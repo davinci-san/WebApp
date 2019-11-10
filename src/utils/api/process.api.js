@@ -60,6 +60,7 @@ export let edit_process = (user_token, ids, info) =>
 
     // Cleans data
     if (!Array.isArray (ids)) { ids = [ids]; }
+    if (!Array.isArray (info)) { info = [info]; }
     for (let n = 0; n < info.length; n ++) {
       if (info[n].id == null) { info[n].id = ids[n]; }
     }

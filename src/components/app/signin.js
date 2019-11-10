@@ -23,8 +23,10 @@ export default class SignIn
     <div id="sign-in">
       <div className="content">
 
-        <input type="mail" className="mail" placeholder="E-mail" />
-        <input type="password" className="pass" placeholder="Password" />        
+        <input type="mail" className="mail" placeholder="E-mail" 
+          onKeyDown={ev=>{if (ev.keyCode==13) { this.signIn () }}} />
+        <input type="password" className="pass" placeholder="Password"
+          onKeyDown={ev=>{if (ev.keyCode==13) { this.signIn () }}} />        
 
         <div className={'error'+(this.state.failed_sign_in?' active':'')}>
           <div className="inner">

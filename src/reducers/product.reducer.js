@@ -66,6 +66,7 @@ export default (( state=init_state,action ) => {
           label: action.payload.label,
           description: action.payload.description,
           processes: 0,
+          new: true, 
 
         }])
 
@@ -106,7 +107,8 @@ export default (( state=init_state,action ) => {
       let elements = state.elements;
       elements[n] = Object.assign ({}, 
         state.elements[n], 
-        action.payload.info
+        action.payload.info,
+        { new: false }
       );
 
       // Returns
@@ -118,9 +120,21 @@ export default (( state=init_state,action ) => {
 
     // Set current products
     case SET_CURRENT_PRODUCT: {
+      
+      // Sets new to false
+      let e = state.elements.concat ([]);
+      for (let n = 0; n < e.length; n ++) {
+        if (e[n].id == action.payload.id) {
+          e[n].new = false; break;
+        }
+      }
+      
+      // Returns
       return Object.assign ({}, state, {
         current: action.payload.id,
+        elements: e,
       });
+
     }
 
     // Default

@@ -33,6 +33,12 @@
 
   }
 
+  .all-products.creating {
+
+    padding-bottom: 192px;
+
+  }
+
   .all-products .product {
     
     position: relative;
@@ -41,19 +47,69 @@
     height: 160px;
     cursor: pointer;
 
-    box-shadow: 0 2px 4px rgba(0,0,0,.03);
+    // box-shadow: 0 2px 4px rgba(0,0,0,.03);
     transition: 120ms $trans-base;
-    background-color: $prim;
-    overflow: hidden;
+    // background-color: $prim;
+    // overflow: hidden;
 
-    &:hover { box-shadow: 0 3px 4px rgba(0,0,0,.07); }
-    &:nth-child(1) { margin-top: 0; }
 
     .container {
 
       position: absolute;
       top: 0; left: 0;
       width: 100%; height: 160px;
+
+      .background {
+
+        position: absolute;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        
+        transition: 250ms $trans-base;
+        background-color: $prim;
+        box-shadow: 0 2px 4px rgba(0,0,0,.03);
+
+        &:after {
+  
+          content: 'NEW';
+          display: block;
+          opacity: 0;
+  
+          position: absolute;
+          top: 10px; left: 8px;
+          padding: 4px 12px;
+          background-color: $prim;
+  
+          font-size: 12px;
+          font-weight: 900;
+  
+          box-shadow: 0px 2px 3px rgba(0,0,0,.1);
+          transition: 250ms $trans-base;
+  
+        }
+      
+      }
+
+      &.new {
+
+        .left-side {
+
+          background-color: rgba($tert, 1);
+
+        }
+  
+        .background {
+  
+          &:after {
+  
+            top: 8px;
+            opacity: 1;
+  
+          }
+  
+        }
+  
+      }
 
     }
 
@@ -64,6 +120,7 @@
       width: 160px;
       height: 100%;
       background-color: rgba($tert, .65);
+      transition: 250ms $trans-base;
 
       svg {
 
@@ -118,7 +175,10 @@
 
         font-size: 16px;
         margin-bottom: 8px;
-        width: calc(100% - 40px);
+        width: 100%;
+        height: 22px;
+        overflow: hidden;
+        white-space: nowrap;
 
       }
 
@@ -127,7 +187,7 @@
         font-size: 12px;
         font-weight: 300;
 
-        width: calc(100% - 40px);
+        width: 100%;
         height: 72px;
         overflow-y: hidden;
 
@@ -138,36 +198,23 @@
         input,
         textarea { 
           
-          background-color: $prim;
+          background-color: transparent;
           border: 0px solid rgba($tert, .5);
           outline: none;
           width: 100%;
 
           font-family: $font-stack;
-          color: $tert;
+          color: $tert; 
           resize: none;
 
-          border: 1px solid darken($prim, 8%);
-          padding: 4px 8px;
+          border-bottom: 1px solid rgba($seco, .1);
+          padding: 4px 4px;
 
-        }
+          &:hover {
 
-        label {
+            border-bottom-color: rgba($seco, .3);
 
-          position: absolute;
-          top: 0; left: 0;
-
-          font-weight: 900;
-          transition: 120ms $trans-base;
-
-        }
-
-        input:focus + label,
-        label.active {
-
-          top: -12px; left: 1px;
-          font-size: 8px;
-          font-weight: 300;
+          }
 
         }
 
@@ -181,6 +228,8 @@
         .label {
 
           margin-top: -2px;
+          height: auto;
+          overflow: initial;
 
           input {
 
@@ -218,9 +267,9 @@
 
       position: absolute;
       top: 0; right: 0;
-      width: 48px; height: 100%;
-      border-left: 1px solid darken($prim, 4%);
-      background-color: $prim;
+      width: 0; height: calc(100% + 4px);
+      overflow: hidden;
+      transition: 250ms $trans-base;
 
       -webkit-touch-callout: none;
       -webkit-user-select: none;
@@ -233,9 +282,9 @@
 
         position: absolute;
         left: 0;
-        width: 100%; height: calc(100% / 2);
+        width: 48px; height: calc((100% - 4px) / 2 - 2px);
 
-        background-color: $prim;
+        box-shadow: 0px 2px 3px rgba(0,0,0,.2);
         border-top: 1px solid darken($prim, 4%);
         cursor: pointer;
 
@@ -249,13 +298,21 @@
 
         &.remove {
           
-          top: 50%;
+          bottom: 4px;
+          background-color: rgba($warn, .75);
+
+          &:hover { background-color: rgba($warn, .875); }
+          &:active { background-color: rgba($warn, 1); }
 
         }
 
         &.edit, &.save {
 
           top: 0;
+          background-color: rgba($tert, .75);
+
+          &:hover { background-color: rgba($tert, .875); }
+          &:active { background-color: rgba($tert, 1); }
 
         }
 
@@ -280,95 +337,34 @@
 
           transition: 120ms $trans-base;
           width: 16px;
-          fill: $seco;
+          fill: $prim;
 
-        }
-
-
-        &:hover { background-color: rgba($tert, .02);}
-        &:active { background-color: rgba($tert, .08); }
-
-        &.remove:hover .inner { fill: $warn; }
-        &.drag:hover .inner { fill: $tert; }
-        &.edit:hover .inner,
-        &.save:hover .inner { 
-          fill: $tert; 
-        }
-
-        &:active { 
-          
-          background-color: lighten($tert, 60%);
-          // box-shadow: inset 0px 1px 2px rgba(0,0,0,.04);
-        
         }
 
       }
     }
 
-    .warning {
+    &:hover .actions,
+    &.editing .actions {
 
-      position: absolute;
-      bottom: 0; left: 0;
-      width: 100%; height: 0;
-      transition: 120ms $trans-base;
-      overflow: hidden;
-      box-sizing: border-box;
-      background-color: darken($prim, 2%);
-      cursor: initial;
-
-      .inner {
-
-        position: absolute;
-        bottom: 0; left: 0;
-        width: 100%; height: 32px;
-        border-top: 1px solid darken($prim, 6%);
-
-        .label {
-
-          position: absolute;
-          top: 50%; left: 24px;
-          transform: translateY(-50%);
-
-          font-size: 12px;
-          font-weight: 300;
-          text-transform: uppercase;
-          color: $seco;
-
-        }
-
-        .response {
-
-          position: absolute;
-          top: 50%; right: 24px;
-          transform: translateY(-50%); 
-
-          font-size: 12px;
-          text-transform: uppercase;
-
-          & > * {
-
-            display: inline-block;
-            margin-left: 16px;
-            transition: 200ms $trans-base;
-            cursor: pointer;
-
-          }
-
-          .agree { color: adjust-color($warn, $saturation: -30%); }
-          .disagree { color: adjust-color($tert, $saturation: -30%); }
-          
-          .agree:hover { color: $warn; }
-          .disagree:hover { color: $tert; }
-
-        }
-
-      }
+      width: 48px;
 
     }
 
-    &.active { 
+    &:hover .background,
+    &.editing .background {
+
+      width: calc(100% - 54px);
+
+    }
+
+    &:hover .background,
+    &.editing .background { box-shadow: 0 3px 4px rgba(0,0,0,.07); }
+    &:nth-child(1) { margin-top: 0; }
+   
+    &.active .background { 
       
-      background-color: lighten($tert, 60%);
+      background-color: lighten($seco, 45%);
       box-shadow: 0 0 0 rgba(0,0,0,0);
 
     }

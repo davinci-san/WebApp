@@ -26,6 +26,12 @@
       top: 0; left: 0;
       width: auto; height: 100%;
 
+      &.notrans {
+
+        transition-duration: 0ms;
+
+      }
+
     }
 
   }

@@ -13,6 +13,7 @@ export default class ViewComponent
     super (props);
     this.state = {
       active: false,
+      searching: false,
     };
   }
   
@@ -29,6 +30,28 @@ export default class ViewComponent
         </div>
 
         <div className="topbar-buttons">
+
+          { this.props.search != null &&
+            <div className={'topbar-button search'+(this.state.searching_forced || this.state.searching?' searching':'')}>
+              
+              <svg viewBox="0 0 24 24" className="inner">
+                <use xlinkHref="#icon-search">
+                </use>
+              </svg>
+
+              <input type="text" className="searchfield" 
+                onFocus={ev=>{ this.setState ({ searching: true }) }}
+                onBlur={ev=>{ this.setState ({ searching: false }) }}
+                onKeyUp={ev=>{ 
+                  
+                  this.props.search (ev);
+                  if (ev.target.value.length>0) { this.setState ({ searching_forced: true }); }
+                  else { this.setState ({ searching_forced: false }); }
+                  
+                }} />
+
+            </div>
+          }
 
           { this.props.add != null &&
             <div className={'topbar-button add'+(this.props.creating?' creating':'')} 
