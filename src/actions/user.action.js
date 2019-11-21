@@ -1,8 +1,8 @@
 
 
 // Imports
-import Config from '../../config';
 import * as API from '../utils/api/user.api';
+import { fetch_team } from './team.action';
 
 
 // Sign in
@@ -16,9 +16,15 @@ export const sign_in = (( mail, pass ) => (dispatch) => {
 
   // On success
   let on_succes = r => {
+    
+    // Signs in
     dispatch ({ type: FINALIZE_SIGN_IN, payload: {
       token: r.user_token, info: { role: r.role }
     }});
+
+    // Fetches team
+    dispatch (fetch_team (r.user_token));
+  
   };
 
   // On fail
@@ -32,6 +38,7 @@ export const sign_in = (( mail, pass ) => (dispatch) => {
   );
 
 });
+
 
 // Sign out
 export const SIGN_OUT = 'SIGN_OUT';

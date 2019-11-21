@@ -372,3 +372,64 @@
   }
 
 }
+
+#app-instance.mobile {
+
+  .product {
+
+    height: 120px !important;
+    margin-top: 24px !important;
+
+    &:nth-child(1) {
+      margin-top: 0px !important;
+    }
+
+    .container {
+
+      height: 120px !important;
+
+      .background:after {
+
+        top: 5px !important;
+        left: 5px !important;
+
+      }
+
+      .left-side {
+
+        width: 64px;
+
+        svg {
+
+          width: 24px;
+
+        }
+
+      }
+
+      .right-side {
+
+        width: calc(100% - 64px);
+        padding: 16px 24px;
+
+        .label {
+
+          font-size: 14px;
+
+        }
+
+        .desc {
+
+          height: 58px;
+          font-size: 11px;
+          margin-top: -4px;
+
+        }
+
+      }
+
+    }
+
+  }
+
+}

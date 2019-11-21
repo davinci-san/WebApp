@@ -77,12 +77,12 @@ export default class ProductsView
         creating={this.state.creating}
         fetching={this.state.fetching}>
 
-        <div className="background-icon">
+        {/* <div className="background-icon">
           <svg viewBox="0 0 24 24">
             <use xlinkHref='#icon-products'>
             </use>
           </svg>
-        </div>
+        </div> */}
 
         { elements.length>0 &&
           <div className={"all-products"+(this.state.creating?' creating':'')}>
@@ -275,8 +275,13 @@ export default class ProductsView
       // Sets input values
       let label = document.getElementById ('product-input-label');
       let desc = document.getElementById ('product-input-desc');
-      label.value = element.label;
-      desc.value = element.description;
+      
+      let lv = element.label.toLowerCase() == 'new product' ? '' : element.label;
+      let dv = element.description.toLowerCase() == 'product description' ? '' : element.description;
+
+      label.value = lv;
+      desc.value = dv;
+
       label.focus ();
 
     }).bind (this));
@@ -286,15 +291,20 @@ export default class ProductsView
   // Save
   saveProduct ( ev, pid ) {
 
-    ev.stopPropagation ();
+    if (ev.stopPropagation != null) {
+      ev.stopPropagation ();
+    }
 
     // Fetches values
     let label = document.getElementById ('product-input-label').value;
     let description = document.getElementById ('product-input-desc').value;
 
+    let lv = label != '' ? label : 'New product';
+    let dv = description != '' ? description : 'Product description';
+
     // Dispatches n' sets state
     this.props.store.dispatch ( edit_product ( this.state.user_token, pid, {
-      label, description
+      label: lv, description: dv
     }));
 
     // Sets state
@@ -366,6 +376,13 @@ export default class ProductsView
     this.unsub = this.props.store.subscribe (
       this.onStoreChange.bind (this)
     ); this.onStoreChange ();
+
+    // Event listeners
+    window.addEventListener ('click', (thang) => {
+      if (this.state.editing != null) {
+        this.saveProduct ({}, this.state.editing);
+      }
+    });
 
   }
 

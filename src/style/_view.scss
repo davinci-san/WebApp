@@ -28,6 +28,29 @@
 
     z-index: 10;
 
+    .hamburger {
+      
+      position: absolute;
+      top: 0; left: 0;
+      width: 68px;
+      height: 100%;
+      border-right: 1px solid darken($prim, 4%);
+
+      display: none;
+
+      svg {
+
+        position: absolute;
+        top: 50%; left: 50%;
+        transform: translate(-50%,-50%);
+
+        width: 20px;
+        fill: $seco;
+
+      }
+
+    }
+
     .label {
 
       position: absolute;
@@ -91,6 +114,12 @@
 
         &.edit .inner {
           
+          height: 18px;
+
+        }
+
+        &.save .inner {
+
           height: 18px;
 
         }
@@ -192,15 +221,6 @@
     overflow-y: scroll; 
     scroll-behavior: smooth;
 
-    &::-webkit-scrollbar {
-      width: 12px;
-    }
-
-    &::-webkit-scrollbar-thumb {
-      background-color: rgba($seco, .1); 
-    }
-  
-
     & > .loader {
 
       position: absolute;
@@ -255,6 +275,48 @@
     
     background-color: darken($prim, 5%); 
     color: $tert; 
+
+  }
+
+}
+
+#app-instance:not(.mobile) .view-body {
+
+  &::-webkit-scrollbar {
+    width: 12px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba($seco, .1); 
+  }
+
+}
+
+#app-instance.mobile .view {
+
+  min-width: 100vw;
+  max-width: 100vh;
+
+  .view-header {
+
+    .hamburger {
+      
+      display: block;
+
+    }
+
+    .label {
+
+      left: 100px;
+      width: calc(100% - 32px * 2 - 68px * 3);
+
+    }
+
+  }
+
+  .view-body {
+
+    padding: 32px;
 
   }
 

@@ -4,13 +4,12 @@
 .grid {
 
   position: relative;
-  width: calc(100% - 64px); height: auto;
-  margin-left: 32px;
-  border: 1px solid rgba($tert, .2);
-  border-bottom-width: 0;
+  width: auto; height: auto;
+  // border: 1px solid rgba($tert, .2);
+  // border-bottom-width: 0;
   background-color: $prim;
 
-  box-shadow: 0px 2px 3px rgba(0,0,0,.04);
+  box-shadow: 0px 2px 3px rgba(0,0,0,.05);
   // transition: height 180ms $trans-base;
 
   &#process-steps {
@@ -45,7 +44,7 @@
 
     position: relative;
     width: 100%; height: 64px;
-    border-bottom: 1px solid rgba($tert, .2);
+    // border-bottom: 1px solid rgba($tert, .2);
     
     text-align: left;
     padding-left: 32px;
@@ -67,11 +66,11 @@
     .closed-icon {
 
       position: absolute;
-      top: 50%; right: calc(66px + 22px);
+      top: 50%; right: 22px;
       transform: translateY(-50%) rotate(180deg);
       
       opacity: 0;
-      // transition: opacity 180ms $trans-base;
+      transition: opacity 180ms $trans-base;
       
       fill: $seco;
       width: 16px;
@@ -88,8 +87,6 @@
       border-bottom-width: 0;
       cursor: pointer;
 
-      transition: 120ms $trans-base;
-      
       svg:not(.loader) {
 
         position: absolute;
@@ -103,19 +100,15 @@
 
       &:hover {
         
-        background-color: rgba($tert, .02);
-
-        svg {
-
-          fill: $tert;
-
-        }
+        background-color: rgba($tert, .5);
+        svg { fill: $prim; }
 
       }
 
       &:active {
 
-        background-color: rgba($tert, .08);
+        background-color: rgba($tert, .8);
+        svg { fill: $prim; }
 
       }
 
@@ -133,11 +126,17 @@
 
     }
 
-    &:hover .closed-icon {
+    &:hover {
 
-      right: calc(66px + 20px);
-      width: 20px;
-      fill: $tert;
+      box-shadow: 0px 3px 3px rgba(0,0,0,.06);
+
+      .closed-icon {
+
+        right: 20px;
+        width: 20px;
+        fill: $tert;
+
+      }
 
     }
 
@@ -213,9 +212,12 @@
         font-size: 12px;
 
         width: calc(100% - 16px);
-        margin-left: -8px;
-        padding: 2px 8px;
-        border: 1px solid darken($prim, 8%);
+        margin-left: -4px;
+        padding: 4px 4px;
+        border: none;
+
+        border-bottom: 1px solid rgba($seco, .1);
+        &:hover { border-bottom: 1px solid rgba($seco, .3); }
 
       }
 
@@ -223,7 +225,7 @@
       .value {
         
         display: inline-block;
-        width: calc((100% - 66px * 2) / 2); height: 100%;
+        width: calc(100% / 2); height: 100%;
         font-weight: 300;
         line-height: 48px;
         font-size: 12px;
@@ -235,7 +237,7 @@
 
       &.single .label {
 
-        width: calc(100% - 66px * 2);
+        width: calc(100%);
         border: 0px solid transparent;
 
       }
@@ -279,19 +281,15 @@
 
         &:hover {
 
-          background-color: rgba($tert, .02);
-        
-          svg {
-
-            fill: $tert;
-
-          }
+          background-color: rgba($tert, .5);        
+          svg { fill: $prim; }
         
         }
 
         &:active {
          
-          background-color: rgba($tert, .08);
+          background-color: rgba($tert, .8);
+          svg { fill: $prim; }
 
         }
 
@@ -301,7 +299,8 @@
 
         right: 0;
         svg { width: 16px; }
-        &:hover svg { fill: $warn; }
+        &:hover { background-color: rgba($warn, .5); svg { fill: $prim; } }
+        &:active { background-color: rgba($warn, .8); svg { fill: $prim; } }
 
       }
 
@@ -321,6 +320,39 @@
 
     }
 
+
+  }
+
+  &.editable {
+
+    .label,
+    .value {
+      
+      width: calc((100% - 66px) / 2) !important;
+
+    }
+
+    .fields.single .label {
+      
+      width: calc(100% - 66px) !important;
+
+    }
+
+    .grid-header {
+
+      .closed-icon {
+        
+        right: calc(66px + 22px);
+
+      }
+
+      &:hover .closed-icon {
+
+        right: calc(66px + 20px);
+
+      }
+
+    }
 
   }
 

@@ -36,4 +36,35 @@
 
   }
 
+  .overlay {
+
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+
+    z-index: 10;
+    transition: 400ms $trans-base;
+    background-color: rgba($seco, .6);
+    opacity: 0;
+
+    pointer-events: none;
+
+  }
+
+}
+
+#app-instance.mobile {
+
+  .sections {
+
+    width: 100%;
+
+  }
+
+  .sidebar.active + .sections {
+
+    .overlay { opacity: 1; }
+
+  }
+  
 }

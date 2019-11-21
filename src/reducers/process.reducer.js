@@ -84,7 +84,7 @@ export default (( state=init_state,action ) => {
           product_id: action.payload.product_id,
           label: action.payload.label,
           desc: action.payload.description,
-          index: action.payload.index
+          index: 9999
           
         }])
       });
@@ -116,7 +116,9 @@ export default (( state=init_state,action ) => {
       let n, e = state.elements.concat ([]);;
       for (n = 0; n < e.length; n ++) {
         if (e[n].id == action.payload.id) {
-          e[n] = Object.assign ({}, e[n], action.payload.info);
+          if (action.payload.info.description != null) {
+            action.payload.info.desc = action.payload.info.description;
+          } e[n] = Object.assign ({}, e[n], action.payload.info);
         }
       }
 

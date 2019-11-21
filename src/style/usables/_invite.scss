@@ -1,0 +1,191 @@
+
+
+#team-invite {
+
+  position: relative;
+  transition: 250ms $trans-base;
+
+  .header {
+
+    position: relative;
+    width: 100%; height: 64px;
+    background-color: $prim;
+    box-shadow: 0px 2px 3px rgba(0,0,0,.06);
+
+    .label {
+
+      position: absolute;
+      top: 50%; left: 32px;
+      transform: translateY(-50%);
+      width: calc(100% - 68px - 128px - 32px * 2);
+      padding: 4px 8px;
+
+      outline: none;
+      font-family: $font-stack;
+      font-size: 12px;
+      color: $tert;
+
+      border: none;
+      border-bottom: 1px solid rgba($seco, .15);
+      &:hover { border-bottom-color: rgba($seco, .3); }
+
+    }
+
+    .drop-down {
+
+      position: absolute;
+      top: 0; right: 68px;
+      width: 128px; height: 100%;
+      border-left: 1px solid rgba($seco, .1);
+      
+      font-weight: 300;
+      font-size: 12px;
+      text-transform: uppercase;
+      cursor: pointer;
+
+      .current {
+
+        position: absolute;
+        top: 50%; left: calc(50% - 4px);
+        transform: translate(-50%, -50%);
+
+      }
+
+      .icon {
+
+        position: absolute;
+        top: 50%; left: calc(50% + 32px);
+        transform: translate(-50%, -50%)
+          rotate(180deg);
+
+        width: 14px;
+        fill: $tert;
+
+      }
+
+      .choices {
+
+        z-index: 8;
+        
+        position: absolute;
+        top: 64px; left: 0;
+        width: 100%; height: 0;
+        transition: 200ms $trans-base;
+        overflow: hidden;
+
+        background-color: $prim;
+        box-shadow: 0px 2px 3px rgba(0,0,0,.06);
+
+        .inner {
+
+          position: absolute;
+          bottom: 0; left: 0;
+          width: 100%;
+          height: calc(64px * 2);
+          
+          .choice {
+
+            width: 100%;
+            height: 64px;
+            border-top: 1px solid rgba($seco, .1);
+            line-height: 64px;
+
+            &:hover { background-color: rgba($tert, .5); color: $prim; }
+            &:active { background-color: rgba($tert, .75); color: $prim; }
+
+          }
+
+        }
+
+      }
+
+      &:hover .choices {
+
+        height: 128px;
+
+      }
+
+    }
+
+    .submit {
+
+      position: absolute;
+      top: 0; right: 0;
+      width: 68px; height: 100%;
+      border-left: 1px solid rgba($seco, .1);
+      cursor: pointer;
+
+      svg {
+
+        position: absolute;
+        top: 50%; left: 50%;
+        transform: translate(-50%,-50%);
+
+        fill: $tert;
+        width: 14px;
+
+      }
+
+      &:hover { background-color: rgba($tert, .5); svg { fill: $prim; } }
+      &:active { background-color: rgba($tert, .75); svg { fill: $prim; } }
+
+    }
+
+  }
+
+  .footer {
+
+    position: absolute;
+    top: calc(64px + 16px);
+    left: -2px; 
+
+    width: calc(100% + 4px); 
+    height: 0;
+    overflow: hidden;
+    transition: 250ms $trans-base;
+
+    .content {
+
+      position: absolute;
+      bottom: 4px; left: 2px;
+      width: calc(100% - 4px); height: 140px;
+      background-color: $prim;
+      box-shadow: 0px 2px 3px rgba(0,0,0,.06);
+
+      text-align: center;
+      font-size: 12px;
+      font-weight: 300;
+
+      padding: 24px 48px;
+      overflow-wrap: break-word;
+
+      & > div {
+
+        margin-top: 4px;
+
+      }
+
+      a {
+
+        font-size: 10px;
+        color: darken($tert, 5%);
+
+      }
+
+    }
+
+  }
+
+  &.footer-active {
+
+    padding-bottom: calc(16px + 140px);
+    
+    .footer {
+
+      height: calc(140px + 4px);
+
+    }
+
+  }
+
+}

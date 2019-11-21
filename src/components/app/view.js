@@ -2,7 +2,14 @@
 
 // Imports
 import React from 'react';
-import { switch_view } from '../../actions/navigation.action';
+
+// Actions
+// Navigation
+import { 
+  switch_view,
+  toggle_sidebar
+} from '../../actions/navigation.action';
+
 
 // View Component
 export default class ViewComponent
@@ -24,7 +31,14 @@ export default class ViewComponent
     
     <div className={'view'+(this.state.active?' active':'')} id={this.props.id}>
       
-      <header className="view-header">
+      <header className="view-header" onClick={ev=>{ev.stopPropagation ()}}>
+        <div className="hamburger" onClick={this.toggleSidebar.bind (this)}>
+          <svg viewBox="0 0 24 24">
+            <use xlinkHref="#icon-hamburger">
+            </use>
+          </svg>
+        </div>
+
         <div className="label">
           {this.props.label}
         </div>
@@ -74,10 +88,19 @@ export default class ViewComponent
             </div>
           }
 
-          { this.props.edit != null && 
-            <div className="topbar-button edit" onClick={this.props.edit.bind (this)}>
+          { this.props.edit != null && this.props.save != null && !this.props.editing &&
+            <div className="topbar-button edit" onClick={ev=>{this.props.edit ()}}>
               <svg viewBox="0 0 24 24" className="inner">
                 <use xlinkHref="#icon-edit">
+                </use>
+              </svg>
+            </div>
+          }
+
+          { this.props.edit != null && this.props.save != null && this.props.editing &&  
+            <div className="topbar-button save" onClick={ev=>{this.props.save ()}}>
+              <svg viewBox="0 0 24 24" className="inner">
+                <use xlinkHref="#icon-save">
                 </use>
               </svg>
             </div>
@@ -116,16 +139,31 @@ export default class ViewComponent
   // Actions
   // Close
   close () {
-    
+
+    // Extracts data
+    let state = this.props.store.getState ();
+    let mobile = state.navigation.mobile;
+
+    // Close callback
     if (this.props.close_callback!=null) {
       this.props.close_callback ();
     }
 
-    this.props.store.dispatch (
-      switch_view ( this.props.previous_view )
-    );
+    // Switches view
+    this.props.store.dispatch ( switch_view ( 
+      !mobile ? this.props.previous_view
+        : this.props.previous_view_mobile
+    ));
 
   }
+
+  // Toggle sidebar
+  toggleSidebar () {
+    this.props.store.dispatch (
+      toggle_sidebar ()
+    );
+  }
+
 
   // Life cycle events
   // On store change

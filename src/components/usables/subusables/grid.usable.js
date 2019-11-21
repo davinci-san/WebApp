@@ -12,9 +12,13 @@ export default class Grid
   constructor (props) {
     super (props);
     this.state = {
+      
+      elements: [ ], 
       closed: false,
-      editing: null,
+      editing: false,
       removing: null,
+      current: null,
+
     };
   }
 
@@ -23,7 +27,10 @@ export default class Grid
   // Main render
   render () { return (
 
-    <div className={'grid'+(this.state.closed?' closed':'')} id={this.props.id}>
+    <div className={'grid'+
+        (this.state.closed?' closed':'')+
+        (this.state.editing?' editable':'')} 
+      id={this.props.id}>
 
       { this.props.fetching &&
         <div className="loader">
@@ -45,23 +52,25 @@ export default class Grid
           </use>
         </svg>
 
-        <div className="add-new" onClick={this.add.bind (this)}>
-          
-          { !this.props.creating &&
-            <svg viewBox="0 0 24 24">
-              <use xlinkHref="#icon-add">
-              </use>
-            </svg>
-          }
+        { this.state.editing &&
+          <div className="add-new" onClick={this.add.bind (this)}>
+            
+            { !this.props.creating &&
+              <svg viewBox="0 0 24 24">
+                <use xlinkHref="#icon-add">
+                </use>
+              </svg>
+            }
 
-          { this.props.creating &&
-            <svg viewBox="0 0 16 16" className="loader">
-              <use xlinkHref="#icon-loading">
-              </use>
-            </svg>
-          }
+            { this.props.creating &&
+              <svg viewBox="0 0 16 16" className="loader">
+                <use xlinkHref="#icon-loading">
+                </use>
+              </svg>
+            }
 
-        </div>
+          </div>
+        } 
       </div>
 
       <div className="grid-body">
@@ -69,7 +78,7 @@ export default class Grid
           { this.props.elements.length > 0 && this.props.elements.map ((e, n) => 
               <div className="grid-element" key={'grid-elemement-'+this.props.id+'#'+e.id}>
 
-                { this.state.editing != e.id &&
+                { !this.state.editing &&
                   <div className={'fields'+(this.props.numbered?' numbered':'')+(this.props.single?' single':'')}>
                     { this.props.numbered && <div className="number">#{n+1}</div> }
                     <div className="label">{e.label}</div>
@@ -77,76 +86,59 @@ export default class Grid
                   </div>
                 }
 
-                { this.state.editing == e.id &&
+                { this.state.editing &&
                   <div className={'fields editing'+(this.props.numbered?' numbered':'')+(this.props.single?' single':'')}>
                     { this.props.numbered && <div className="number">#{n+1}</div> }
 
                     <div className="label">
-                      <input className="process-property-label" placeholder="Fx. Temperature." 
-                        onKeyDown={ev=>{ if (ev.keyCode==13) this.save (ev, e); }}/>
+                      <input className="process-property-label" 
+                        data-grid-id={e.id} 
+                        placeholder="Fx. Temperature." />
                     </div>
                     
                     { !this.props.single &&
                       <div className="value">
-                        <input className="process-property-value" placeholder="Fx. 800 °C." 
-                          onKeyDown={ev=>{ if (ev.keyCode==13) this.save (ev, e); }}/>
+                        <input className="process-property-value" 
+                          data-grid-id={e.id}
+                          placeholder="Fx. 800 °C."/>
                       </div>
                     }
                   </div>
                 }
 
-                <div className="action-buttons">
+                { this.state.editing &&
+                  <div className="action-buttons">
 
-                  { this.state.deleting != e.id &&
-                    <div className="action-button remove"
-                      onClick={ev => {
-                        ev.stopPropagation (); 
-                        this.setState({ deleting:e.id }); 
-                        clearTimeout (this.deletion_to);
-                        this.deletion_to = setTimeout (_=>{ this.setState ({ deleting: null })},1500);
-                      }}>
-                      <svg viewBox="0 0 24 24">
-                        <use xlinkHref="#icon-delete">
-                        </use>
-                      </svg>
-                    </div>
-                  }
+                    { this.state.removing != e.id &&
+                      <div className="action-button remove"
+                        onClick={ev => {
+                          ev.stopPropagation (); 
+                          this.setState({ removing:e.id }); 
+                          clearTimeout (this.deletion_to);
+                          this.deletion_to = setTimeout (_=>{ this.setState ({ removing: null })},1500);
+                        }}>
+                        <svg viewBox="0 0 24 24">
+                          <use xlinkHref="#icon-delete">
+                          </use>
+                        </svg>
+                      </div>
+                    } 
 
-                  { this.state.deleting == e.id &&
-                    <div className="action-button remove"
-                      onClick={ev => {
-                        clearTimeout (this.deletion_to);
-                        this.remove (ev, e);
-                      }}>
-                      <svg viewBox="0 0 24 24">
-                        <use xlinkHref="#icon-accept">
-                        </use>
-                      </svg>
-                    </div>
-                  }
+                    { this.state.removing == e.id &&
+                      <div className="action-button remove"
+                        onClick={ev => {
+                          clearTimeout (this.deletion_to);
+                          this.remove (ev, e);
+                        }}>
+                        <svg viewBox="0 0 24 24">
+                          <use xlinkHref="#icon-accept">
+                          </use>
+                        </svg>
+                      </div>
+                    }
 
-                  { this.state.editing != e.id &&
-                    <div className="action-button edit" 
-                      onClick={ev=>this.edit (ev, e)}>
-                      <svg viewBox="0 0 24 24">
-                        <use xlinkHref="#icon-edit">
-                        </use>
-                      </svg>
-                    </div>
-                  }
-
-
-                  { this.state.editing == e.id &&
-                    <div className="action-button save" 
-                      onClick={ev=>this.save (ev, e)}>
-                      <svg viewBox="0 0 24 24">
-                        <use xlinkHref="#icon-save">
-                        </use>
-                      </svg>
-                    </div>
-                  }
-
-                </div>
+                  </div>
+                }
 
               </div>
             )
@@ -162,6 +154,42 @@ export default class Grid
   // Component did update
   componentDidUpdate () {
     this.resize ();
+
+    // Updates fields
+    if (this.props.editable && !this.state.editing) {
+      
+      // Sets state
+      this.setState ({ editing: true }, () => {
+        
+        // Aliases elements and
+        // fetches label and value fields
+        let e = this.props.elements;
+        let l = document.querySelectorAll ('#'+this.props.id+' .process-property-label[data-grid-id]');
+        let v = document.querySelectorAll ('#'+this.props.id+' .process-property-value[data-grid-id]');
+        
+        // Sets label values
+        for (let n = 0; n < l.length; n ++) {
+          l[n].value = e.find (el => el.id == l[n].dataset.gridId).label;
+        }
+
+        // Sets values values
+        if (!this.props.single) {
+          for (let n = 0; n < v.length; n ++) {
+            v[n].value = e.find (el => el.id == v[n].dataset.gridId).value;
+          }
+        }
+
+      });
+
+    } else if (!this.props.editable && this.state.editing ) {
+
+      // Sets state
+      for (let n = 0; n < this.props.elements.length; n ++) {
+        this.save (this.props.elements[n]);
+      } this.setState ({ editing: false });
+
+    }
+
   }
 
 
@@ -197,29 +225,6 @@ export default class Grid
 
   }
 
-  // Edit
-  edit (event, elem) {
-    event.stopPropagation ();
-    
-    this.setState({ 
-      editing: elem.id 
-    }, _ => {
-
-      // Fetches DOM elements
-      let label = document.querySelectorAll ('#'+this.props.id+' .process-property-label') [0];
-      let value = document.querySelectorAll ('#'+this.props.id+' .process-property-value') [0];
-
-      // Sets values
-      label.value = elem.label;
-      if (value != null) value.value = elem.value;
-
-      // Requests focus
-      label.focus ();
-
-    });
-
-  }
-
 
   // External actions
   // Add
@@ -231,24 +236,21 @@ export default class Grid
   }
 
   // Save
-  save (event, elem) {
-    event.stopPropagation ();
+  save (elem) {
 
     // Fetches dom elements
-    let label = document.querySelectorAll ('#'+this.props.id+' .process-property-label') [0];
-    let value = document.querySelectorAll ('#'+this.props.id+' .process-property-value') [0];
+    let label = document.querySelectorAll ('#'+this.props.id+' .process-property-label[data-grid-id="'+elem.id+'"]') [0];
+    let value = document.querySelectorAll ('#'+this.props.id+' .process-property-value[data-grid-id="'+elem.id+'"]') [0];
+
+    let lv = label.value != '' ? label.value : 'No label';
+    let vv = value != null ? (value.value != '' ? value.value : 'No value') : null;
 
     // Callback with values
     if (this.props.saveCb != null) {
       this.props.saveCb (
-        elem, label.value, (value!=null?value.value:null)
+        elem, lv, vv
       );
     }
-
-    // Sets state
-    this.setState ({
-      editing: null,
-    });
 
   }
 

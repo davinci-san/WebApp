@@ -25,6 +25,8 @@ import {
   set_current_process
 } from '../../actions/process.action';
 
+
+// Sub actions
 // Properties
 import { 
   fetch_properties 
@@ -34,6 +36,12 @@ import {
 import {
   fetch_steps
 } from '../../actions/step.action';
+
+// Notes
+import { 
+  fetch_notes
+} from '../../actions/note.action';
+
 
 
 // Products view
@@ -82,6 +90,7 @@ export default class ProcessesView
       id="v_processes" 
       store={this.props.store} 
       previous_view="sidebar" 
+      previous_view_mobile="v_products"
       close_callback={this.onClose.bind (this)}
       add={this.newProcess.bind (this)}
       fetching={this.state.fetching}
@@ -145,7 +154,8 @@ export default class ProcessesView
       <div className="background">
 
         <div className="drag"
-          onMouseDown={ev=>{this.dragStart (ev, e.id)}}>
+          onMouseDown={ev=>{this.dragStart (ev, e.id)}}
+          onTouchStart={ev=>{this.dragStart (ev, e.id)}}>
             <svg viewBox="0 0 24 24">
               <use xlinkHref="#icon-drag">
               </use>
@@ -233,12 +243,17 @@ export default class ProcessesView
   dragStart (e, id) {
     e.stopPropagation ();
 
+    // Checks for touch
+    if (e.clientX == null || e.clientY == null) {
+      e = e.touches [0];
+    }
+
     // Extracts data
     let t = e.target.getBoundingClientRect ();
     let posx = t.x;
     let posy = e.clientY;
     let oy = e.clientY - t.y;
-
+    
     // Sets state
     this.setState ({
       drag: Object.assign (this.state.drag, {
@@ -285,10 +300,15 @@ export default class ProcessesView
       } else {
         e[ef(id)].index = n+1;
       }
-    }
+    } 
 
     // Sets base index
     e[ef (this.state.drag.id)].index = i;
+
+    // Check for touch
+    if (event.clientX == null || event.clientY == null) {
+      event = event.touches [0];
+    }
 
     // Sets state
     this.setState ({
@@ -337,12 +357,15 @@ export default class ProcessesView
   // Actions
   // Open
   openProcess (view, pid) {
-    this.props.store.dispatch ( switch_view (view) );
-    if (this.props.current != pid) {
-      this.props.store.dispatch ( set_current_process (pid) );
-      this.props.store.dispatch ( fetch_properties ( this.state.user_token, pid ));
-      this.props.store.dispatch ( fetch_steps ( this.state.user_token, pid ));
-    }
+    window.requestAnimationFrame (() => {
+      this.props.store.dispatch ( switch_view (view) );
+      if (this.props.current != pid) {
+        this.props.store.dispatch ( set_current_process (pid) );
+        this.props.store.dispatch ( fetch_properties ( this.state.user_token, pid ));
+        this.props.store.dispatch ( fetch_steps ( this.state.user_token, pid ));
+        this.props.store.dispatch ( fetch_notes ( this.state.user_token, pid ));
+      }
+    });
   }
 
   // New
@@ -485,6 +508,15 @@ export default class ProcessesView
     // Event listeners
     window.addEventListener ('mouseup', this.dragEnd.bind (this));
     window.addEventListener ('mousemove', this.dragOngoing.bind (this));
+
+    window.addEventListener ('touchend', this.dragEnd.bind (this));
+    window.addEventListener ('touchmove', this.dragOngoing.bind (this));
+
+    window.addEventListener ('click', (thang) => {
+      if (this.state.editing != null) {
+        this.saveProcess ({}, this.state.editing);
+      }
+    });
 
   }
 

@@ -36,14 +36,37 @@
 
     .logo {
 
-      display: none;
+      display: block;
       position: absolute;
-      top: 50%; left: 50%;
-      transform: translate(-50%,-50%);
+      top: 50%; left: 28px;
+      transform: translateY(-50%);
       
       transition: 400ms $trans-base;
-      height: 12px;
-      fill: rgba($tert, .8);
+      height: 10px;
+      fill: $tert;
+      opacity: .8;
+
+    }
+
+    .close {
+      
+      display: none;
+      position: absolute;
+      top: 0; right: 0;
+      width: 68px;
+      height: 100%;
+      border-left: 1px solid darken($prim, 4%);
+
+      svg {
+
+        position: absolute;
+        top: 50%; left: 50%;
+        transform: translate(-50%,-50%);
+
+        width: 18px;
+        fill: $seco;
+
+      }
 
     }
 
@@ -92,34 +115,17 @@
     }
 
   }
-
+  
+  &.active,
   &:hover { 
     
-    width: calc(#{$sidebar-width} * 2); 
-  
-  }
-
-  &:not(.active):hover {
-
-    .footer .button {
-
-      .icon {
-
-        left: 80px;
-
-      }
-
-    }
-
-  }
-  
-  &.active { 
-    
-    width: calc(50vw + #{$sidebar-width}/2); 
+    width: calc(50vw + #{$sidebar-width}/2 + 1px); 
 
     .header .logo {
       
-      height: 24px;
+      height: 16px;
+      left: 32px;
+      opacity: .8;
 
     }
 
@@ -133,6 +139,50 @@
 
     }
   
+  }
+
+}
+
+#app-instance.mobile {
+
+  .sidebar {
+
+    left: calc(-100% + #{$sidebar-width-mobile});
+    width: calc(100% - #{$sidebar-width-mobile});
+    opacity: 1;
+
+    .close {
+
+      display: block;
+      opacity: 1;
+
+    }
+  
+    &.active {
+
+      left: 0;
+    
+    }
+
+  }
+  
+  .sidebar .footer .button {
+
+    height: 64px;
+
+    .icon {
+
+      width: 18px;
+
+    }
+
+    .label {
+
+      font-size: 14px;
+      left: 82px;
+
+    }
+
   }
 
 }

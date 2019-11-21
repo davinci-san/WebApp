@@ -48,6 +48,8 @@ export default class Properties
         removeCb={this.remove.bind (this)} 
         fetching={this.state.fetching}
         creating={this.state.creating}
+        editable={this.props.editable}
+        current={this.state.process_id}
       
       />
     </div>

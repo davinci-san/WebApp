@@ -46,6 +46,8 @@ export default class Guide
         removeCb={this.remove.bind (this)}
         fetching={this.state.fetching}
         creating={this.state.creating}
+        editable={this.props.editable}
+        current={this.state.pid}
       
       />
     </div>

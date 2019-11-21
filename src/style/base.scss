@@ -12,6 +12,7 @@ $warn: #c44a64;
 
 $trans-base: cubic-bezier(.675,0,.325,1);
 $sidebar-width: 96px;
+$sidebar-width-mobile: 32px;
 
 // Normalization
 body {
@@ -56,6 +57,8 @@ body {
 @import './views/products';
 @import './views/processes';
 @import './views/process_info';
+@import './views/team_management';
 
 @import './usables/grid';
 @import './usables/notes';
+@import './usables/invite';

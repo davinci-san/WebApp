@@ -65,13 +65,6 @@
       // box-shadow: 0 2px 4px rgba(0,0,0,.03);
       // &:hover { box-shadow: 0 3px 4px rgba(0,0,0,.07); }
 
-      &.active {
-        
-        // background-color: lighten($tert, 60%); 
-        // box-shadow: 0 0 0 rgba(0,0,0,0);
-
-      }
-
       &.dragging {
 
         position: fixed;
@@ -245,10 +238,20 @@
         }
 
       }
-  
+      
+      &.active .background {
+
+        background-color: lighten($seco, 45%);
+        box-shadow: 0 0 0 rgba(0,0,0,0) !important;
+        
+      }
 
     }
 
   }
 
+}
+
+#app-instance.mobile {
+  
 }

@@ -6,6 +6,7 @@ import thunk from 'redux-thunk';
 
 // Reducers
 import user from './reducers/user.reducer';
+import team from './reducers/team.reducer';
 import navigation from './reducers/navigation.reducer';
 import products from './reducers/product.reducer';
 import processes from './reducers/process.reducer';
@@ -19,7 +20,7 @@ const middleware = compose_enhancers ? compose_enhancers (applyMiddleware (thunk
 
 // Root reducer
 const root_reducer = combineReducers ({ 
-  user, navigation, 
+  user, team, navigation, 
   products, processes, 
   properties, steps, notes 
 });
